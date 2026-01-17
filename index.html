@@ -29,7 +29,6 @@
             position: fixed; top: 0; left: 0; right: 0; z-index: 40;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         header.hidden-header { transform: translateY(-100%); }
 
         .page { 
@@ -43,11 +42,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        #p2.active { 
-            padding-top: calc(10px + env(safe-area-inset-top)); 
-            padding-left: 0; padding-right: 0; 
-        }
-
+        #p2.active { padding: calc(10px + env(safe-area-inset-top)) 0 0; }
         #p2-container {
             height: 82vh; margin: 0 4px; border-radius: 24px; overflow: hidden;
             border: 1px solid var(--m3-surface-container); background: #FFFFFF;
@@ -78,7 +73,6 @@
         }
         .fab.hidden { transform: scale(0) rotate(-45deg); opacity: 0; }
 
-        /* --- ANIMATED BOTTOM BAR --- */
         nav {
             position: fixed; bottom: calc(24px + env(safe-area-inset-bottom)); 
             left: 12px; right: 12px; height: 80px; 
@@ -88,52 +82,29 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
             padding: 0 8px;
         }
-        
-        .n-btn { 
-            display: flex; flex-direction: column; align-items: center; 
-            flex: 1; cursor: pointer; position: relative;
-        }
-
+        .n-btn { display: flex; flex-direction: column; align-items: center; flex: 1; cursor: pointer; position: relative; }
         .icon-box { 
             width: 32px; height: 32px; border-radius: 16px; 
             display: flex; align-items: center; justify-content: center; 
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             color: var(--m3-on-surface-variant);
         }
-
-        .n-btn.active .icon-box { 
-            width: 64px; 
-            background-color: var(--m3-primary-container); 
-            color: var(--m3-primary); 
-        }
-
-        .n-btn.active .material-symbols-rounded {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-
-        .n-txt { 
-            font-size: 11px; font-weight: 600; margin-top: 6px; 
-            color: var(--m3-on-surface-variant); 
-            transition: all 0.3s ease;
-        }
-
-        .n-btn.active .n-txt { 
-            color: var(--m3-on-surface); 
-            font-weight: 800;
-            transform: translateY(-2px);
-        }
-
-        .n-btn:active .icon-box { transform: scale(0.85); }
+        .n-btn.active .icon-box { width: 64px; background-color: var(--m3-primary-container); color: var(--m3-primary); }
+        .n-btn.active .material-symbols-rounded { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .n-txt { font-size: 11px; font-weight: 600; margin-top: 6px; color: var(--m3-on-surface-variant); transition: all 0.3s ease; }
+        .n-btn.active .n-txt { color: var(--m3-on-surface); font-weight: 800; transform: translateY(-2px); }
 
         #scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: none; backdrop-filter: blur(6px); }
         #sheet { 
             position: fixed; bottom: -100%; left: 0; right: 0; 
-            background: var(--m3-surface); border-radius: 32px 32px 0 0; z-index: 1001; height: 88vh; 
-            display: flex; flex-direction: column; transition: bottom 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            background: var(--m3-surface); border-radius: 32px 32px 0 0; z-index: 1001; 
+            height: 88vh; display: flex; flex-direction: column; 
+            transition: bottom 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            overflow: hidden;
         }
-        .sheet-header { padding: 12px 20px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
-        .sheet-body { flex: 1; overflow-y: auto; background: var(--m3-bg); padding: 12px 0 60px; }
-        iframe { width: 100%; height: 100%; border: none; background: white; }
+        .sheet-header { padding: 8px 20px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
+        .sheet-body { flex: 1; overflow-y: auto; background: var(--m3-bg); display: flex; flex-direction: column; padding: 0; }
+        #sheet-content iframe { width: 100%; height: 100%; flex: 1; border: none; background: white; }
     </style>
 </head>
 <body>
@@ -147,7 +118,7 @@
 
     <div id="scrim" onclick="closeSheet()"></div>
     <div id="sheet">
-        <div class="w-12 h-1.5 bg-[#49454F] rounded-full mx-auto my-4 flex-shrink-0" onclick="closeSheet()"></div>
+        <div class="w-12 h-1.5 bg-[#49454F] rounded-full mx-auto my-3 flex-shrink-0" onclick="closeSheet()"></div>
         <div class="sheet-header">
             <h2 id="s-title" class="font-bold text-lg truncate flex-1 text-[#E6E1E5]">Preview</h2>
             <button id="btn-external" class="p-2.5 bg-[#4F378B] text-[#D0BCFF] rounded-2xl flex items-center justify-center">
@@ -163,7 +134,7 @@
     <main>
         <section id="p1" class="page active"></section>
         <section id="p2" class="page">
-            <div id="p2-container"><iframe src="https://poharaayub.github.io/OCS-NFI-Job-Desk-Apps-Client-/"></iframe></div>
+            <div id="p2-container"><iframe src="https://poharaayub.github.io/OCS-NFI-Job-Desk-Apps-Client-/" class="w-full h-full border-none"></iframe></div>
         </section>
         <section id="p3" class="page"></section>
         <section id="p4" class="page"></section>
@@ -212,13 +183,11 @@
 
         const MSG_DEFAULT = "Halo, tolong cleaning area/ bagian ini";
 
+        // --- CORE NAVIGATION ---
         function go(id, t, el) {
             document.querySelectorAll('.n-btn').forEach(x => x.classList.remove('active'));
             el.classList.add('active');
-
-            document.querySelectorAll('.page').forEach(x => {
-                x.classList.remove('active');
-            });
+            document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
             const activePage = document.getElementById(id);
             activePage.classList.add('active');
             
@@ -244,13 +213,20 @@
             </button></div>`;
         }
 
+        // --- SHEET & BACK BUTTON LOGIC ---
         function openInSheet(title, url) {
             const content = document.getElementById('sheet-content');
             const btnExt = document.getElementById('btn-external');
             document.getElementById('s-title').innerText = title;
             btnExt.style.display = 'flex';
             btnExt.onclick = () => window.open(url, '_blank');
+            
+            content.style.padding = "0";
             content.innerHTML = `<iframe src="${url.includes('spreadsheets') ? url.split('/edit')[0] + '/preview' : url}"></iframe>`;
+            
+            // Push state to history for back button support
+            history.pushState({ sheetOpen: true }, "");
+            
             document.getElementById('scrim').style.display = 'block';
             document.getElementById('sheet').style.bottom = '0';
         }
@@ -259,7 +235,9 @@
             const content = document.getElementById('sheet-content');
             const btnExt = document.getElementById('btn-external');
             btnExt.style.display = 'none';
-            content.innerHTML = '<div class="flex flex-col gap-1 items-center pt-4"></div>';
+            
+            content.style.padding = "12px 0 60px";
+            content.innerHTML = '<div class="flex flex-col gap-1 items-center pt-2"></div>';
             const inner = content.querySelector('div');
 
             if(type === 'prod') {
@@ -271,26 +249,42 @@
                 const list = type === 'req_tl' ? members.filter(m => m.d.includes("Team Leader") || m.d.includes("Manager")) : members.filter(m => m.d.includes("CSO") || m.d.includes("Gardener") || m.d.includes("Pembersihan"));
                 list.forEach(m => inner.innerHTML += createCard(m.n, "account_circle", `chat('${m.p}', '${MSG_DEFAULT}')`, m.d));
             }
+
+            history.pushState({ sheetOpen: true }, "");
+
             document.getElementById('scrim').style.display = 'block';
             document.getElementById('sheet').style.bottom = '0';
         }
 
-        function closeSheet() { document.getElementById('sheet').style.bottom = '-100%'; document.getElementById('scrim').style.display = 'none'; }
-        function chat(p, msg) { window.open(`https://wa.me/${p}?text=${encodeURIComponent(msg)}`); closeSheet(); }
+        function closeSheet(isPopState = false) { 
+            document.getElementById('sheet').style.bottom = '-100%'; 
+            document.getElementById('scrim').style.display = 'none'; 
+            
+            // If closed via UI (X or Scrim) and history has state, go back
+            if (!isPopState && window.history.state?.sheetOpen) {
+                history.back();
+            }
+        }
+
+        // Listen for hardware/browser back button
+        window.addEventListener('popstate', function (event) {
+            closeSheet(true); 
+        });
+
+        function chat(p, msg) { 
+            window.open(`https://wa.me/${p}?text=${encodeURIComponent(msg)}`); 
+            closeSheet(); 
+        }
 
         const renderItems = (id, items) => {
             const container = document.getElementById(id);
             items.forEach(i => {
-                let action = "";
-                if (i.ext) {
-                    action = `window.open('${i.url}', '_blank')`;
-                } else {
-                    action = i.url ? `openInSheet('${i.l}', '${i.url}')` : (i.s ? `openMenuSheet('${i.s}')` : "");
-                }
+                let action = i.ext ? `window.open('${i.url}', '_blank')` : (i.url ? `openInSheet('${i.l}', '${i.url}')` : (i.s ? `openMenuSheet('${i.s}')` : ""));
                 container.innerHTML += createCard(i.l, i.i, action);
             });
         };
 
+        // --- DATA RENDERING ---
         renderItems('p1', [
             {l:"HO Jakarta", i:"apartment", url:"https://docs.google.com/spreadsheets/d/1xleDib2bas3Z17D4rsxXufCL7U-x_fLXRPRHuys4jQ0/edit"},
             {l:"Office Lantai 2", i:"layers", url:"https://docs.google.com/spreadsheets/d/1tyMsJDVou1WAPlNJ91pwmJRSwbEp11WTkxKHh06t_ok/edit"},
@@ -315,9 +309,8 @@
             {l:"Program Big Cleaning", i:"folder_shared", ext: true, url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz"}
         ]);
 
-        members.forEach(m => { 
-            document.getElementById('p5').innerHTML += createCard(m.n, "account_circle", `chat('${m.p}', 'Halo ${m.n}')`, m.d); 
-        });
+        const p5 = document.getElementById('p5');
+        members.forEach(m => { p5.innerHTML += createCard(m.n, "account_circle", `chat('${m.p}', 'Halo ${m.n}')`, m.d); });
     </script>
 </body>
 </html>
