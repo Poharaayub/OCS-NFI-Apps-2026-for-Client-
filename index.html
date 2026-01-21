@@ -5,161 +5,240 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>OCS NFI APPS 2026 Client</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     <style>
         :root {
-            --m3-bg: #1C1B1F;
-            --m3-surface: #2B2930;
-            --m3-surface-container: #36343B;
-            --m3-primary: #D0BCFF;
-            --m3-on-primary: #381E72;
-            --m3-primary-container: #4F378B;
-            --m3-on-primary-container: #EADDFF;
-            --m3-on-surface: #E6E1E5;
-            --m3-on-surface-variant: #CAC4D0;
+            --m3-bg: #1A1C19; 
+            --m3-surface: #222521;
+            --m3-surface-container-high: #2A2E29;
+            --m3-primary: #B5CCBA; 
+            --m3-primary-container: #2D352E; 
+            --m3-on-primary-container: #D1E8D5;
+            --m3-secondary-container: #3E4A3F;
+            --m3-on-secondary-container: #DDE6DB;
+            --m3-on-surface: #E2E3DE;
+            --m3-on-surface-variant: #C1C9BE;
+            --nav-height: 72px;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--m3-bg); font-family: 'Plus Jakarta Sans', sans-serif; margin: 0; height: 100vh; overflow: hidden; color: var(--m3-on-surface); }
+        * { 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent; 
+            margin: 0; padding: 0;
+        }
+
+        body { 
+            background-color: var(--m3-bg); 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            height: 100vh; 
+            overflow: hidden; 
+            color: var(--m3-on-surface);
+            line-height: 1.5;
+        }
 
         header {
-            padding: calc(env(safe-area-inset-top) + 20px) 16px 12px;
-            background: rgba(28, 27, 31, 0.85);
-            backdrop-filter: blur(12px);
+            padding: calc(env(safe-area-inset-top) + 20px) 24px 20px;
+            background: rgba(26, 28, 25, 0.9);
+            backdrop-filter: blur(20px);
             position: fixed; top: 0; left: 0; right: 0; z-index: 40;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        header.hidden-header { transform: translateY(-100%); }
+        
+        header.hidden-header {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
 
         .page { 
             display: none; height: 100vh; overflow-y: auto; opacity: 0;
-            padding: calc(90px + env(safe-area-inset-top)) 12px calc(140px + env(safe-area-inset-bottom));
+            padding: calc(90px + env(safe-area-inset-top)) 20px calc(var(--nav-height) + env(safe-area-inset-bottom) + 30px);
+            -webkit-overflow-scrolling: touch;
         }
-        .page.active { display: block; opacity: 1; animation: fadeIn 0.4s ease-out forwards; }
+        .page.active { display: block; opacity: 1; animation: slide-up 0.4s cubic-bezier(0, 0, 0.2, 1) forwards; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+        @keyframes slide-up {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        #p2.active { padding: calc(10px + env(safe-area-inset-top)) 0 0; }
-        #p2-container {
-            height: 82vh; margin: 0 4px; border-radius: 24px; overflow: hidden;
-            border: 1px solid var(--m3-surface-container); background: #FFFFFF;
+        nav {
+            position: fixed; 
+            bottom: 0; left: 0; right: 0;
+            height: calc(var(--nav-height) + env(safe-area-inset-bottom)); 
+            background: var(--m3-surface); 
+            display: flex; 
+            justify-content: space-around; 
+            align-items: flex-start;
+            padding-top: 12px;
+            z-index: 50; 
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
         }
+        
+        .n-btn { display: flex; flex-direction: column; align-items: center; flex: 1; height: 100%; transition: transform 0.1s ease; }
+        .n-btn:active { transform: scale(0.95); }
+
+        .icon-wrapper {
+            width: 64px; height: 32px; display: flex; align-items: center; justify-content: center;
+            border-radius: 20px; transition: all 0.3s ease; color: var(--m3-on-surface-variant);
+        }
+        .n-btn.active .icon-wrapper { background-color: var(--m3-primary-container); color: var(--m3-primary); width: 68px; }
+        .n-btn .material-symbols-rounded { font-variation-settings: 'FILL' 0; font-size: 24px; }
+        .n-btn.active .material-symbols-rounded { font-variation-settings: 'FILL' 1; }
+        
+        .n-txt { font-size: 12px; font-weight: 500; margin-top: 6px; color: var(--m3-on-surface-variant); letter-spacing: 0.2px; }
+        .n-btn.active .n-txt { color: var(--m3-on-surface); font-weight: 700; }
 
         .card { 
-            background: var(--m3-surface); padding: 18px 24px; margin-bottom: 10px; border-radius: 24px; 
-            display: flex; align-items: center; width: 100%; min-height: 88px; 
-            border: 1px solid rgba(255,255,255,0.05); text-align: left;
-            transition: transform 0.2s;
+            background: var(--m3-surface-container-high); 
+            padding: 20px; margin-bottom: 14px; border-radius: 28px; 
+            display: flex; align-items: center; width: 100%; border: none;
+            color: inherit;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
-        .card:active { background: var(--m3-primary-container); transform: scale(0.97); }
-        
+        .card:active { transform: scale(0.97); background: var(--m3-secondary-container); }
         .c-icon { 
-            width: 48px; height: 48px; border-radius: 16px; 
-            background: var(--m3-primary-container); color: var(--m3-primary); 
-            display: flex; align-items: center; justify-content: center; margin-right: 18px; flex-shrink: 0;
-        }
-        .c-info h3 { font-weight: 700; color: var(--m3-on-surface); font-size: 16px; margin: 0; }
-        .c-info p { font-size: 12px; color: var(--m3-on-surface-variant); margin-top: 4px; }
-
-        .fab {
-            position: fixed; bottom: calc(115px + env(safe-area-inset-bottom)); right: 24px;
-            background-color: var(--m3-primary-container); color: var(--m3-on-primary-container);
-            padding: 16px 24px; border-radius: 18px; display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); z-index: 60; font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .fab.hidden { transform: scale(0) rotate(-45deg); opacity: 0; }
-
-        nav {
-            position: fixed; bottom: calc(24px + env(safe-area-inset-bottom)); 
-            left: 12px; right: 12px; height: 80px; 
-            background: var(--m3-surface-container); 
-            display: flex; justify-content: space-around; align-items: center; 
-            z-index: 50; border-radius: 28px; 
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-            padding: 0 8px;
-        }
-        .n-btn { display: flex; flex-direction: column; align-items: center; flex: 1; cursor: pointer; position: relative; }
-        .icon-box { 
-            width: 32px; height: 32px; border-radius: 16px; 
+            width: 52px; height: 52px; border-radius: 18px; 
+            background: var(--m3-secondary-container); 
+            color: var(--m3-primary); 
             display: flex; align-items: center; justify-content: center; 
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            color: var(--m3-on-surface-variant);
+            margin-right: 18px; 
+            flex-shrink: 0;
         }
-        .n-btn.active .icon-box { width: 64px; background-color: var(--m3-primary-container); color: var(--m3-primary); }
-        .n-btn.active .material-symbols-rounded { font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
-        .n-txt { font-size: 11px; font-weight: 600; margin-top: 6px; color: var(--m3-on-surface-variant); transition: all 0.3s ease; }
-        .n-btn.active .n-txt { color: var(--m3-on-surface); font-weight: 800; transform: translateY(-2px); }
+        .c-icon .material-symbols-rounded { font-size: 28px; }
 
-        #scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: none; backdrop-filter: blur(6px); }
+        #scrim { 
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 1000; 
+            display: none; opacity: 0; transition: opacity 0.3s ease; 
+            backdrop-filter: blur(8px);
+        }
+        
+        /* BOTTOM SHEET 90% FRAME */
         #sheet { 
-            position: fixed; bottom: -100%; left: 0; right: 0; 
-            background: var(--m3-surface); border-radius: 32px 32px 0 0; z-index: 1001; 
-            height: 88vh; display: flex; flex-direction: column; 
-            transition: bottom 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+            position: fixed; 
+            bottom: 0; left: 0; right: 0; 
+            background: var(--m3-bg); 
+            z-index: 1001; 
+            height: 90vh; /* Ukuran ditingkatkan menjadi 90% */
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+            display: flex; flex-direction: column;
+            border-radius: 32px 32px 0 0;
+            box-shadow: 0 -12px 48px rgba(0,0,0,0.6);
             overflow: hidden;
         }
-        .sheet-header { padding: 8px 20px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); flex-shrink: 0; }
-        .sheet-body { flex: 1; overflow-y: auto; background: var(--m3-bg); display: flex; flex-direction: column; padding: 0; }
-        #sheet-content iframe { width: 100%; height: 100%; flex: 1; border: none; background: white; }
+
+        .sheet-visible #sheet { transform: translateY(0); }
+        .sheet-visible #scrim { display: block; opacity: 1; }
+
+        .sheet-handle {
+            width: 36px; height: 5px; background: rgba(255,255,255,0.3); 
+            border-radius: 3px; margin: 12px auto 8px; flex-shrink: 0;
+        }
+
+        .sheet-header {
+            display: flex;
+            align-items: center;
+            padding: 8px 20px 16px;
+            background: var(--m3-bg);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .sheet-action-btn { 
+            width: 44px; height: 44px; border-radius: 12px; 
+            display: flex; align-items: center; justify-content: center; 
+            transition: all 0.2s;
+        }
+        .sheet-action-btn:active { transform: scale(0.9); background: rgba(255,255,255,0.1); }
+
+        .m3-loader { width: 48px; height: 48px; border: 4px solid rgba(181, 204, 186, 0.1); border-top-color: var(--m3-primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        #fab-periodik { 
+            width: 64px; height: 64px; border-radius: 20px; 
+            display: flex; align-items: center; justify-content: center; 
+            box-shadow: 0 12px 30px rgba(0,0,0,0.5);
+            position: fixed; 
+            bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 24px); 
+            right: 24px; 
+            z-index: 45;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
     </style>
 </head>
-<body>
+<body id="app-body">
 
-    <header id="main-header"><h1 id="h-title" class="font-extrabold text-2xl tracking-tight text-[#E6E1E5]">Daily Activity</h1></header>
+    <header id="main-header">
+        <h1 id="h-title" class="font-extrabold text-2xl tracking-tight text-[#B5CCBA]">Daily Activity</h1>
+    </header>
 
-    <div id="fab-periodik" class="fab hidden" onclick="window.open('https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y', '_blank')">
-        <span class="material-symbols-rounded">folder_open</span>
-        <span>Selengkapnya</span>
+    <div id="fab-periodik" class="bg-[#B5CCBA] text-[#1A1C19] scale-0 opacity-0 pointer-events-none" onclick="window.open('https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y', '_blank')">
+        <span class="material-symbols-rounded !text-3xl">folder_open</span>
     </div>
 
     <div id="scrim" onclick="closeSheet()"></div>
+    
+    <!-- 90% HEIGHT BOTTOM SHEET -->
     <div id="sheet">
-        <div class="w-12 h-1.5 bg-[#49454F] rounded-full mx-auto my-3 flex-shrink-0" onclick="closeSheet()"></div>
+        <div class="sheet-handle"></div>
         <div class="sheet-header">
-            <h2 id="s-title" class="font-bold text-lg truncate flex-1 text-[#E6E1E5]">Preview</h2>
-            <button id="btn-external" class="p-2.5 bg-[#4F378B] text-[#D0BCFF] rounded-2xl flex items-center justify-center">
-                <span class="material-symbols-rounded">open_in_new</span>
+            <button onclick="closeSheet()" class="sheet-action-btn text-white mr-2">
+                <span class="material-symbols-rounded !text-2xl">close</span>
             </button>
-            <button onclick="closeSheet()" class="p-2.5 bg-[#36343B] text-[#CAC4D0] rounded-2xl flex items-center justify-center">
-                <span class="material-symbols-rounded">close</span>
-            </button>
+            <h2 id="s-title" class="text-lg font-bold flex-1 truncate text-white">Pratinjau</h2>
+            <div class="flex items-center gap-2">
+                <button id="btn-external" class="sheet-action-btn bg-[#2D352E] text-[#B5CCBA] hidden">
+                    <span class="material-symbols-rounded !text-xl">open_in_new</span>
+                </button>
+            </div>
         </div>
-        <div id="sheet-content" class="sheet-body"></div>
+        
+        <div id="sheet-content-area" class="flex-1 overflow-hidden relative">
+            <div id="loading-ui" class="absolute inset-0 flex items-center justify-center bg-[#1A1C19] z-10 hidden">
+                <div class="m3-loader"></div>
+            </div>
+            <div id="sheet-content" class="h-full w-full overflow-y-auto bg-[#1A1C19]"></div>
+        </div>
     </div>
 
     <main>
-        <section id="p1" class="page active"></section>
-        <section id="p2" class="page">
-            <div id="p2-container"><iframe src="https://poharaayub.github.io/OCS-NFI-Job-Desk-Apps-Client-/" class="w-full h-full border-none"></iframe></div>
-        </section>
-        <section id="p3" class="page"></section>
-        <section id="p4" class="page"></section>
-        <section id="p5" class="page"></section>
+        <div id="p1" class="page active"></div>
+        <div id="p2" class="page !p-0">
+            <div class="h-full flex flex-col pt-[calc(env(safe-area-inset-top)+0px)]">
+                <div class="flex-1 bg-white mx-0 rounded-t-none overflow-hidden">
+                    <iframe id="iframe-periodik" class="w-full h-full border-none" src="" loading="lazy"></iframe>
+                </div>
+            </div>
+        </div>
+        <div id="p3" class="page"></div>
+        <div id="p4" class="page"></div>
+        <div id="p5" class="page"></div>
     </main>
 
     <nav>
         <div class="n-btn active" onclick="go('p1', 'Daily Activity', this)">
-            <div class="icon-box"><span class="material-symbols-rounded">dashboard</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">dashboard</span></div>
             <span class="n-txt">Daily</span>
         </div>
         <div class="n-btn" onclick="go('p2', 'Periodik', this)">
-            <div class="icon-box"><span class="material-symbols-rounded">event_repeat</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">event_repeat</span></div>
             <span class="n-txt">Periodik</span>
         </div>
         <div class="n-btn" onclick="go('p3', 'Request', this)">
-            <div class="icon-box"><span class="material-symbols-rounded">add_circle</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">add_circle</span></div>
             <span class="n-txt">Request</span>
         </div>
         <div class="n-btn" onclick="go('p4', 'Laporan', this)">
-            <div class="icon-box"><span class="material-symbols-rounded">assignment</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">assignment</span></div>
             <span class="n-txt">Laporan</span>
         </div>
         <div class="n-btn" onclick="go('p5', 'Member', this)">
-            <div class="icon-box"><span class="material-symbols-rounded">group</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">group</span></div>
             <span class="n-txt">Member</span>
         </div>
     </nav>
@@ -178,139 +257,160 @@
             { n: "Muhammad Toni", d: "CSO Produksi", p: "6281286448626" },
             { n: "M. Rifai", d: "CSO Produksi", p: "6285810611074" },
             { n: "Amrullah", d: "CSO Warehouse 2 & 1", p: "6283879624040" },
-            { n: "Nabrih", d: "Pembersihan Pallet WH Tepung", p: "6281295412005" }
+            { n: "Nabrih", d: "WH Tepung Specialist", p: "6281295412005" }
         ];
 
-        const MSG_DEFAULT = "Halo, tolong cleaning area/ bagian ini";
+        const menuData = {
+            p1: [
+                {l:"HO Jakarta", i:"apartment", url:"https://docs.google.com/spreadsheets/d/1xleDib2bas3Z17D4rsxXufCL7U-x_fLXRPRHuys4jQ0/edit"},
+                {l:"Office Lantai 2", i:"layers", url:"https://docs.google.com/spreadsheets/d/1tyMsJDVou1WAPlNJ91pwmJRSwbEp11WTkxKHh06t_ok/edit"},
+                {l:"Office Lantai 1", i:"floor", url:"https://docs.google.com/spreadsheets/d/14PpB7OEDIW_si7OgyKO2LAjJGHeXXAzC8JDvjoD3yC8/edit"},
+                {l:"Gardener Area", i:"park", url:"https://docs.google.com/spreadsheets/d/1Fb4O-uwNcqmfDU9XfxGdGXgcGGUgYXGTl0fctk8WFLs/edit"},
+                {l:"Produksi Area", i:"factory", s:"prod"},
+                {l:"Warehouse 2 & 1", i:"inventory_2", url:"https://docs.google.com/spreadsheets/d/1xhyGL_HEfzX2YP8ehgrstr2DfjAcuMR9txdH7rcohbI/edit"},
+                {l:"Warehouse 1", i:"warehouse", url:"https://docs.google.com/spreadsheets/d/1WeXStuNQlU53G7NtmMIIZcUdyQnQD7OTsJRgf6kCrPo/edit"}
+            ],
+            p3: [
+                {l:"Request ke Team Leader", i:"hail", s:"req_tl"}, 
+                {l:"Request ke Cleaner", i:"cleaning_services", s:"req_cso"}
+            ],
+            p4: [
+                {l:"Schedule Member", i:"calendar_today", url:"https://docs.google.com/spreadsheets/d/1TUSJ4jp6Ag7bFnUk54YpES1SKo8m_FBekuG-fShZaE8/edit"},
+                {l:"Laporan Pencucian Box", i:"inventory", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit"},
+                {l:"Laporan Pencucian Pallet", i:"view_agenda", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit"},
+                {l:"Laporan Pembersihan Pallet Warehouse Tepung", i:"cleaning_bucket", url:"https://docs.google.com/spreadsheets/d/1C9Zrywvi_ggnHnKHB9fxUU9f-DCWaGNFJflKqbHVEnI/edit"},
+                {l:"Feedback & Complaint", i:"forum", url:"https://wa.me/6289637126728", ext:true},
+                {l:"Big Cleaning", i:"folder_shared", url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz", ext:true}
+            ]
+        };
 
-        // --- CORE NAVIGATION ---
-        function go(id, t, el) {
-            document.querySelectorAll('.n-btn').forEach(x => x.classList.remove('active'));
-            el.classList.add('active');
-            document.querySelectorAll('.page').forEach(x => x.classList.remove('active'));
-            const activePage = document.getElementById(id);
-            activePage.classList.add('active');
-            
+        let sheetIsOpen = false;
+
+        function go(id, title, el) {
             const header = document.getElementById('main-header');
+            document.querySelectorAll('.n-btn').forEach(b => b.classList.remove('active'));
+            el.classList.add('active');
+            
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const targetPage = document.getElementById(id);
+            targetPage.classList.add('active');
+            
             const fab = document.getElementById('fab-periodik');
+            const iframe = document.getElementById('iframe-periodik');
 
             if(id === 'p2') {
                 header.classList.add('hidden-header');
-                fab.classList.remove('hidden');
+                fab.classList.replace('scale-0', 'scale-100');
+                fab.classList.replace('opacity-0', 'opacity-100');
+                fab.classList.remove('pointer-events-none');
+                if(!iframe.src) iframe.src = "https://poharaayub.github.io/OCS-NFI-Job-Desk-Apps-Client-/";
             } else {
                 header.classList.remove('hidden-header');
-                document.getElementById('h-title').innerText = t;
-                fab.classList.add('hidden');
+                fab.classList.replace('scale-100', 'scale-0');
+                fab.classList.replace('opacity-100', 'opacity-0');
+                fab.classList.add('pointer-events-none');
+                renderPage(id);
             }
-            closeSheet();
+            document.getElementById('h-title').innerText = title;
         }
 
-        function createCard(l, i, a, d = "") {
-            return `<div class="px-2 w-full"><button class="card" onclick="${a}">
+        function renderPage(id) {
+            const container = document.getElementById(id);
+            if(id === 'p5') {
+                container.innerHTML = `<div class="p-1">${members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}')`, m.d)).join('')}</div>`;
+                return;
+            }
+            if(!menuData[id]) return;
+            container.innerHTML = `<div class="p-1">${menuData[id].map(item => {
+                let act = item.s ? `openMenuSheet('${item.s}')` : (item.ext ? `window.open('${item.url}','_blank')` : `openInSheet('${item.l}','${item.url}')`);
+                return createCard(item.l, item.i, act);
+            }).join('')}</div>`;
+        }
+
+        function createCard(t, i, a, d="") {
+            return `
+            <button class="card" onclick="${a}">
                 <div class="c-icon"><span class="material-symbols-rounded">${i}</span></div>
-                <div class="c-info"><h3>${l}</h3>${d ? `<p>${d}</p>` : ''}</div>
-                <span class="material-symbols-rounded text-[#938F99] ml-auto">chevron_right</span>
-            </button></div>`;
+                <div class="flex-1 text-left">
+                    <div class="font-bold text-[17px] leading-tight text-white mb-1">${t}</div>
+                    ${d ? `<div class="text-[13px] text-[#C1C9BE] font-medium">${d}</div>` : ''}
+                </div>
+                <span class="material-symbols-rounded opacity-30 text-white">chevron_right</span>
+            </button>`;
         }
 
-        // --- SHEET & BACK BUTTON LOGIC ---
+        function openSheet(title) {
+            document.getElementById('s-title').innerText = title;
+            document.getElementById('app-body').classList.add('sheet-visible');
+            sheetIsOpen = true;
+            history.pushState({s:1}, "");
+        }
+
         function openInSheet(title, url) {
             const content = document.getElementById('sheet-content');
+            const loader = document.getElementById('loading-ui');
             const btnExt = document.getElementById('btn-external');
-            document.getElementById('s-title').innerText = title;
-            btnExt.style.display = 'flex';
             btnExt.onclick = () => window.open(url, '_blank');
+            btnExt.classList.remove('hidden');
             
-            content.style.padding = "0";
-            content.innerHTML = `<iframe src="${url.includes('spreadsheets') ? url.split('/edit')[0] + '/preview' : url}"></iframe>`;
+            content.classList.add('bg-white');
+            content.innerHTML = '';
+            loader.classList.remove('hidden');
             
-            // Push state to history for back button support
-            history.pushState({ sheetOpen: true }, "");
-            
-            document.getElementById('scrim').style.display = 'block';
-            document.getElementById('sheet').style.bottom = '0';
+            const pUrl = url.includes('spreadsheets') ? url.replace(/\/edit.*$/, '/preview') : url;
+            const f = document.createElement('iframe');
+            f.className = "w-full h-full border-none opacity-0 transition-opacity duration-300";
+            f.src = pUrl;
+            f.onload = () => { 
+                loader.classList.add('hidden'); 
+                f.classList.remove('opacity-0'); 
+            };
+            content.appendChild(f);
+            openSheet(title);
         }
 
         function openMenuSheet(type) {
             const content = document.getElementById('sheet-content');
-            const btnExt = document.getElementById('btn-external');
-            btnExt.style.display = 'none';
+            document.getElementById('btn-external').classList.add('hidden');
+            document.getElementById('loading-ui').classList.add('hidden');
+            content.classList.remove('bg-white');
             
-            content.style.padding = "12px 0 60px";
-            content.innerHTML = '<div class="flex flex-col gap-1 items-center pt-2"></div>';
-            const inner = content.querySelector('div');
-
-            if(type === 'prod') {
-                document.getElementById('s-title').innerText = "Shift Produksi";
-                inner.innerHTML += createCard("Shift Pagi", "light_mode", "openInSheet('Shift Pagi', 'https://docs.google.com/spreadsheets/d/17Q2XE0EJeK_lssBFGwsQEhLZ4AodoxeTN6w3G6kIfUA/edit')");
-                inner.innerHTML += createCard("Shift Malam", "dark_mode", "openInSheet('Shift Malam', 'https://docs.google.com/spreadsheets/d/1SDMqGcMUVXzS1xT_TwrnknUEbJTa5sopvqRkI6EIowA/edit')");
+            let html = '<div class="px-5 py-4">';
+            let title = type==='prod'?"Area Produksi":(type==='req_tl'?"Request ke TL":"Request ke CSO");
+            
+            if(type==='prod'){
+                html += createCard("Shift Pagi","light_mode","openInSheet('Pagi','https://docs.google.com/spreadsheets/d/17Q2XE0EJeK_lssBFGwsQEhLZ4AodoxeTN6w3G6kIfUA/edit')");
+                html += createCard("Shift Malam","dark_mode","openInSheet('Malam','https://docs.google.com/spreadsheets/d/1SDMqGcMUVXzS1xT_TwrnknUEbJTa5sopvqRkI6EIowA/edit')");
             } else {
-                document.getElementById('s-title').innerText = type === 'req_tl' ? "Pilih Team Leader" : "Pilih Personel";
-                const list = type === 'req_tl' ? members.filter(m => m.d.includes("Team Leader") || m.d.includes("Manager")) : members.filter(m => m.d.includes("CSO") || m.d.includes("Gardener") || m.d.includes("Pembersihan"));
-                list.forEach(m => inner.innerHTML += createCard(m.n, "account_circle", `chat('${m.p}', '${MSG_DEFAULT}')`, m.d));
+                const list = type==='req_tl' ? members.filter(m=>m.d.includes("Leader")||m.d.includes("Manager")) : members.filter(m=>!m.d.includes("Leader")&&!m.d.includes("Manager"));
+                list.forEach(m => { 
+                    const msg = "Halo, tolong bantu pembersihan di area ini.";
+                    html += createCard(m.n, "account_circle", `chat('${m.p}','${msg}')`, m.d); 
+                });
             }
-
-            history.pushState({ sheetOpen: true }, "");
-
-            document.getElementById('scrim').style.display = 'block';
-            document.getElementById('sheet').style.bottom = '0';
+            content.innerHTML = html + '</div>';
+            openSheet(title);
         }
 
-        function closeSheet(isPopState = false) { 
-            document.getElementById('sheet').style.bottom = '-100%'; 
-            document.getElementById('scrim').style.display = 'none'; 
-            
-            // If closed via UI (X or Scrim) and history has state, go back
-            if (!isPopState && window.history.state?.sheetOpen) {
-                history.back();
-            }
+        function closeSheet() {
+            document.getElementById('app-body').classList.remove('sheet-visible');
+            if(sheetIsOpen) history.back();
+            sheetIsOpen = false;
         }
 
-        // Listen for hardware/browser back button
-        window.addEventListener('popstate', function (event) {
-            closeSheet(true); 
-        });
-
-        function chat(p, msg) { 
-            window.open(`https://wa.me/${p}?text=${encodeURIComponent(msg)}`); 
-            closeSheet(); 
-        }
-
-        const renderItems = (id, items) => {
-            const container = document.getElementById(id);
-            items.forEach(i => {
-                let action = i.ext ? `window.open('${i.url}', '_blank')` : (i.url ? `openInSheet('${i.l}', '${i.url}')` : (i.s ? `openMenuSheet('${i.s}')` : ""));
-                container.innerHTML += createCard(i.l, i.i, action);
-            });
+        window.onpopstate = () => { 
+            if(sheetIsOpen) { 
+                document.getElementById('app-body').classList.remove('sheet-visible'); 
+                sheetIsOpen=false; 
+            } 
         };
 
-        // --- DATA RENDERING ---
-        renderItems('p1', [
-            {l:"HO Jakarta", i:"apartment", url:"https://docs.google.com/spreadsheets/d/1xleDib2bas3Z17D4rsxXufCL7U-x_fLXRPRHuys4jQ0/edit"},
-            {l:"Office Lantai 2", i:"layers", url:"https://docs.google.com/spreadsheets/d/1tyMsJDVou1WAPlNJ91pwmJRSwbEp11WTkxKHh06t_ok/edit"},
-            {l:"Office Lantai 1", i:"floor", url:"https://docs.google.com/spreadsheets/d/14PpB7OEDIW_si7OgyKO2LAjJGHeXXAzC8JDvjoD3yC8/edit"},
-            {l:"Gardener Area", i:"park", url:"https://docs.google.com/spreadsheets/d/1Fb4O-uwNcqmfDU9XfxGdGXgcGGUgYXGTl0fctk8WFLs/edit"},
-            {l:"Produksi Area", i:"factory", s:"prod"},
-            {l:"Warehouse 2 & 1", i:"inventory_2", url:"https://docs.google.com/spreadsheets/d/1xhyGL_HEfzX2YP8ehgrstr2DfjAcuMR9txdH7rcohbI/edit"},
-            {l:"Warehouse 1", i:"warehouse", url:"https://docs.google.com/spreadsheets/d/1WeXStuNQlU53G7NtmMIIZcUdyQnQD7OTsJRgf6kCrPo/edit"}
-        ]);
-        
-        renderItems('p3', [
-            {l:"Request ke Team Leader", i:"hail", s:"req_tl"}, 
-            {l:"Request ke Cleaner", i:"cleaning_services", s:"req_cso"}
-        ]);
-        
-        renderItems('p4', [
-            {l:"Schedule Anggota", i:"calendar_today", url:"https://docs.google.com/spreadsheets/d/1TUSJ4jp6Ag7bFnUk54YpES1SKo8m_FBekuG-fShZaE8/edit"},
-            {l:"Laporan Pencucian Box", i:"inventory", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit"},
-            {l:"Laporan Pencucian Pallet", i:"view_agenda", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit"},
-            {l:"Laporan Pembersihan Pallet Warehouse Tepung", i:"layers_clear", url:"https://docs.google.com/spreadsheets/d/1C9Zrywvi_ggnHnKHB9fxUU9f-DCWaGNFJflKqbHVEnI/edit?usp=drivesdk"},
-            {l:"Feedback & Complaint", i:"forum", ext: true, url:"https://wa.me/6289637126728"},
-            {l:"Program Big Cleaning", i:"folder_shared", ext: true, url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz"}
-        ]);
+        function chat(p, m) { 
+            window.open(`https://wa.me/${p}?text=${encodeURIComponent(m)}`, '_blank'); 
+        }
 
-        const p5 = document.getElementById('p5');
-        members.forEach(m => { p5.innerHTML += createCard(m.n, "account_circle", `chat('${m.p}', 'Halo ${m.n}')`, m.d); });
+        window.onload = () => renderPage('p1');
     </script>
 </body>
 </html>
+
