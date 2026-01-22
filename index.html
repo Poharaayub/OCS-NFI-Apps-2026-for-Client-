@@ -18,7 +18,6 @@
             --m3-on-secondary-container: #DDE6DB;
             --m3-on-surface: #E2E3DE;
             --m3-on-surface-variant: #C1C9BE;
-            /* Tinggi Navigasi & Margin */
             --nav-height: 72px;
             --nav-bottom-margin: 20px;
         }
@@ -32,9 +31,9 @@
         body { 
             background-color: var(--m3-bg); 
             font-family: 'Plus Jakarta Sans', sans-serif; 
-            height: 100vh; 
+            height: 100dvh; 
             width: 100vw;
-            overflow: hidden; 
+            overflow: hidden; /* Tetap hidden di body untuk mencegah double scrollbar browser */
             color: var(--m3-on-surface);
             line-height: 1.5;
         }
@@ -54,29 +53,37 @@
         header.hidden-header {
             transform: translateY(-100%);
             opacity: 0;
+            pointer-events: none;
         }
 
         /* Container Halaman Utama */
         .page-container {
-            height: 100vh;
+            height: 100dvh;
             width: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
+            position: relative;
+            overflow: hidden;
         }
 
         .page { 
             display: none; 
-            min-height: 100vh;
+            height: 100%;
+            width: 100%;
             opacity: 0;
-            /* Padding bawah disesuaikan agar konten tidak tertutup floating bar */
+            overflow-y: auto; /* Aktifkan scroll di dalam page */
+            -webkit-overflow-scrolling: touch;
             padding: calc(85px + env(safe-area-inset-top)) 16px calc(var(--nav-height) + var(--nav-bottom-margin) + 40px + env(safe-area-inset-bottom));
         }
         
+        /* Halaman Periodik (Full Webview) */
         .page.full-page {
             padding: 0 !important;
-            height: 100vh;
-            overflow: hidden;
+            height: 100dvh;
+            width: 100vw;
+            overflow: hidden; /* Periodik tidak boleh scroll internal karena ada iframe */
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
         }
 
         .page.active { 
@@ -90,7 +97,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Floating Navigation Bar */
+        /* Navigasi tetap melayang */
         nav {
             position: fixed; 
             bottom: calc(var(--nav-bottom-margin) + env(safe-area-inset-bottom)); 
@@ -160,7 +167,6 @@
             color: var(--m3-on-surface); 
         }
 
-        /* Card Modern */
         .card { 
             background: var(--m3-surface-container-high); 
             padding: 14px 18px; 
@@ -184,9 +190,7 @@
             margin-right: 14px; 
             flex-shrink: 0;
         }
-        .c-icon .material-symbols-rounded { font-size: 24px; }
 
-        /* Floating Action Button (FAB) */
         #fab-periodik { 
             width: 56px; height: 56px; border-radius: 18px; 
             display: flex; align-items: center; justify-content: center; 
@@ -194,11 +198,10 @@
             position: fixed; 
             bottom: calc(var(--nav-height) + var(--nav-bottom-margin) + 24px + env(safe-area-inset-bottom)); 
             right: 20px; 
-            z-index: 45;
+            z-index: 60;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
-        /* Sheets & Overlays */
         #scrim { 
             position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; 
             display: none; opacity: 0; transition: opacity 0.3s ease; 
@@ -264,11 +267,11 @@
         </div>
     </div>
 
-    <div class="page-container" id="scroll-container">
-        <main>
+    <div class="page-container">
+        <main class="h-full w-full">
             <div id="p1" class="page active"></div>
             <div id="p2" class="page full-page">
-                <iframe id="iframe-periodik" class="w-full h-full border-none" src="" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                <iframe id="iframe-periodik" class="w-full h-full border-none bg-black" src="" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
             </div>
             <div id="p3" class="page"></div>
             <div id="p4" class="page"></div>
@@ -344,7 +347,6 @@
 
         function go(id, title, el) {
             const header = document.getElementById('main-header');
-            const scrollContainer = document.getElementById('scroll-container');
             
             document.querySelectorAll('.n-btn').forEach(b => b.classList.remove('active'));
             el.classList.add('active');
@@ -353,8 +355,8 @@
             const targetPage = document.getElementById(id);
             targetPage.classList.add('active');
             
-            // Reset scroll position on page change
-            scrollContainer.scrollTo(0, 0);
+            // Penting: Reset scroll setiap ganti halaman
+            targetPage.scrollTop = 0;
             
             const fab = document.getElementById('fab-periodik');
             const iframe = document.getElementById('iframe-periodik');
@@ -383,11 +385,11 @@
             if(!container || id === 'p2') return;
             
             if(id === 'p5') {
-                container.innerHTML = `<div class="p-1">${members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}')`, m.d)).join('')}</div>`;
+                container.innerHTML = `<div class="pb-4">${members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}')`, m.d)).join('')}</div>`;
                 return;
             }
             if(!menuData[id]) return;
-            container.innerHTML = `<div class="p-1">${menuData[id].map(item => {
+            container.innerHTML = `<div class="pb-4">${menuData[id].map(item => {
                 let act = item.s ? `openMenuSheet('${item.s}')` : (item.ext ? `window.open('${item.url}','_blank')` : `openInSheet('${item.l}','${item.url}')`);
                 return createCard(item.l, item.i, act);
             }).join('')}</div>`;
@@ -479,7 +481,6 @@
             window.open(`https://wa.me/${p}?text=${encodeURIComponent(m)}`, '_blank'); 
         }
 
-        // Initialize first page
         window.onload = () => renderPage('p1');
     </script>
 </body>
