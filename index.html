@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#1D1B20">
+    <meta name="theme-color" content="#0F172A">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>OCS NFI APPS 2026 Client</title>
@@ -14,16 +14,18 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            --m3-bg: #1D1B20; 
-            --m3-surface: #262429;
-            --m3-surface-container-high: #2B2930;
-            --m3-primary: #D0BCFF; 
-            --m3-primary-container: #4F378B; 
-            --m3-on-primary-container: #EADDFF;
-            --m3-secondary-container: #4A4458;
-            --m3-on-secondary-container: #E8DEF8;
-            --m3-on-surface: #E6E1E5;
-            --m3-on-surface-variant: #CAC4D0;
+            /* Formal Midnight Theme Palette */
+            --m3-bg: #0F172A; /* Deep Navy */
+            --m3-surface: #1E293B; /* Slate 800 */
+            --m3-surface-container-high: #334155; /* Slate 700 */
+            --m3-primary: #94A3B8; /* Slate 400 (Muted Steel) */
+            --m3-primary-container: #1E293B; 
+            --m3-on-primary-container: #F8FAFC;
+            --m3-secondary-container: #334155;
+            --m3-on-secondary-container: #F1F5F9;
+            --m3-on-surface: #F8FAFC;
+            --m3-on-surface-variant: #94A3B8;
+            --accent-blue: #38BDF8; /* Sky Blue for subtle focus */
             --nav-height: 72px;
             --nav-bottom-margin: 20px;
         }
@@ -42,14 +44,14 @@
             bottom: calc(var(--nav-height) + var(--nav-bottom-margin) + 24px + env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: #2B2930; 
-            color: var(--m3-primary);
+            background: #1E293B; 
+            color: var(--accent-blue);
             padding: 12px 20px;
             border-radius: 16px;
             font-size: 13px; font-weight: 600;
             z-index: 100; display: flex; align-items: center; gap: 12px;
             box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            border: 1px solid rgba(208, 188, 255, 0.2);
+            border: 1px solid rgba(56, 189, 248, 0.2);
             width: calc(100% - 48px); max-width: 400px;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
             opacity: 0; pointer-events: none;
@@ -58,7 +60,7 @@
 
         header {
             padding: calc(env(safe-area-inset-top) + 16px) 24px 16px;
-            background: rgba(29, 27, 32, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             position: fixed; top: 0; left: 0; right: 0; z-index: 40;
             border-bottom: 1px solid rgba(255,255,255,0.05);
@@ -85,7 +87,7 @@
         nav {
             position: fixed; bottom: calc(var(--nav-bottom-margin) + env(safe-area-inset-bottom)); 
             left: 16px; right: 16px; height: var(--nav-height); 
-            background: rgba(38, 36, 41, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             display: flex; justify-content: space-around; align-items: center;
             z-index: 50; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08);
             box-shadow: 0 12px 32px rgba(0,0,0,0.5); padding: 0 8px;
@@ -94,96 +96,95 @@
         .n-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; height: 100%; transition: all 0.2s ease; cursor: pointer; }
         .n-btn:active { transform: scale(0.9); }
         .icon-wrapper { width: 54px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 16px; transition: all 0.3s cubic-bezier(0.2, 0, 0, 1); color: var(--m3-on-surface-variant); margin-bottom: 2px; }
-        .n-btn.active .icon-wrapper { background-color: var(--m3-primary-container); color: var(--m3-primary); }
+        .n-btn.active .icon-wrapper { background-color: var(--accent-blue); color: #0F172A; }
         .n-btn .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400; font-size: 24px; }
         .n-btn.active .material-symbols-rounded { font-variation-settings: 'FILL' 1, 'wght' 400; }
         .n-txt { font-size: 10px; font-weight: 600; color: var(--m3-on-surface-variant); letter-spacing: 0.2px; }
-        .n-btn.active .n-txt { color: var(--m3-on-surface); }
+        .n-btn.active .n-txt { color: var(--accent-blue); }
 
         .card { 
-            background: var(--m3-surface-container-high); padding: 14px 18px; margin-bottom: 12px; border-radius: 20px; 
-            display: flex; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.03);
-            color: inherit; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: var(--m3-surface); padding: 16px 20px; margin-bottom: 12px; border-radius: 16px; 
+            display: flex; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05);
+            color: inherit; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.2);
         }
-        .card:active { transform: scale(0.96); background: var(--m3-secondary-container); }
-        .c-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--m3-secondary-container); color: var(--m3-primary); display: flex; align-items: center; justify-content: center; margin-right: 14px; flex-shrink: 0; }
+        .card:active { transform: scale(0.98); background: var(--m3-surface-container-high); }
+        .c-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--m3-surface-container-high); color: var(--accent-blue); display: flex; align-items: center; justify-content: center; margin-right: 14px; flex-shrink: 0; }
 
-        /* FAB & Shake Animation */
         .fab { 
             width: 56px; height: 56px; border-radius: 18px; display: flex; align-items: center; justify-content: center; 
             box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: fixed; 
             bottom: calc(var(--nav-height) + var(--nav-bottom-margin) + 24px + env(safe-area-inset-bottom)); 
             right: 20px; z-index: 60; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            background: #D0BCFF; color: #1D1B20;
+            background: var(--accent-blue); color: #0F172A;
             transform: scale(0); opacity: 0; pointer-events: none;
         }
         .fab.visible { transform: scale(1); opacity: 1; pointer-events: auto; animation: folder-shake 4s infinite ease-in-out; }
         
         @keyframes folder-shake {
             0%, 80%, 100% { transform: scale(1) rotate(0deg); }
-            82% { transform: scale(1.1) rotate(10deg); }
-            84% { transform: scale(1.1) rotate(-10deg); }
-            86% { transform: scale(1.1) rotate(10deg); }
-            88% { transform: scale(1.1) rotate(-10deg); }
+            82% { transform: scale(1.1) rotate(5deg); }
+            84% { transform: scale(1.1) rotate(-5deg); }
+            86% { transform: scale(1.1) rotate(5deg); }
+            88% { transform: scale(1.1) rotate(-5deg); }
             90% { transform: scale(1) rotate(0deg); }
         }
 
-        #scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(4px); }
+        #scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(8px); }
         
         #sheet { 
             position: fixed; bottom: 0; left: 0; right: 0; 
             background: var(--m3-bg); z-index: 1001; 
             display: flex; flex-direction: column;
-            border-radius: 28px 28px 0 0;
-            box-shadow: 0 -8px 40px rgba(0,0,0,0.6);
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -8px 40px rgba(0,0,0,0.8);
             transform: translateY(100%);
-            transition: transform 0.45s cubic-bezier(0.1, 0.9, 0.2, 1);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             height: 92vh; 
             max-width: 640px; margin: 0 auto; 
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .sheet-visible #sheet { transform: translateY(0); }
         .sheet-visible #scrim { display: block; opacity: 1; }
 
-        .sheet-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.2); border-radius: 10px; margin: 10px auto 14px; flex-shrink: 0; }
+        .sheet-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 10px; margin: 12px auto 14px; flex-shrink: 0; }
 
         #sheet-content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
         #sheet-content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
 
         .m3-progress { width: 48px; height: 48px; animation: m3-rotate-container 1.568s linear infinite; }
-        .m3-progress circle { fill: none; stroke: var(--m3-primary); stroke-width: 4.5; stroke-linecap: round; animation: m3-stroke-dynamic 1.332s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        .m3-progress circle { fill: none; stroke: var(--accent-blue); stroke-width: 4; stroke-linecap: round; animation: m3-stroke-dynamic 1.332s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
         @keyframes m3-rotate-container { to { transform: rotate(360deg); } }
         @keyframes m3-stroke-dynamic { 0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; } 50% { stroke-dasharray: 95, 200; stroke-dashoffset: -30px; } 100% { stroke-dasharray: 1, 200; stroke-dashoffset: -125px; } }
 
-        .offline-placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 40px; text-align: center; }
-        .sheet-iframe { width: 100%; height: 100%; border: none; background: white; }
+        .sheet-iframe { width: 100%; height: 100%; border: none; background: #f8fafc; }
 
-        /* Styles for Feedback Form integration */
-        .m3-field { background: #251e35; border-bottom: 2px solid #938f99; border-radius: 12px 12px 4px 4px; transition: all 0.3s ease; }
-        .m3-field:focus-within { background: #2b233d; border-bottom-color: var(--m3-primary); }
-        .m3-input-raw { background: transparent; border: none; outline: none; color: #e6e1e5; width: 100%; padding: 12px 16px; font-size: 16px; }
-        .m3-fab-submit { background: var(--m3-primary); color: #1D1B20; border-radius: 16px; height: 56px; display: flex; align-items: center; justify-content: center; font-weight: 700; gap: 12px; margin-top: 24px; transition: transform 0.1s active; }
-        .m3-fab-submit:active { transform: scale(0.96); opacity: 0.9; }
+        /* Form styling updates */
+        .m3-field { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: all 0.3s ease; }
+        .m3-field:focus-within { border-color: var(--accent-blue); box-shadow: 0 0 0 1px var(--accent-blue); }
+        .m3-input-raw { background: transparent; border: none; outline: none; color: #f8fafc; width: 100%; padding: 14px 16px; font-size: 15px; }
+        .m3-fab-submit { background: var(--accent-blue); color: #0F172A; border-radius: 14px; height: 56px; display: flex; align-items: center; justify-content: center; font-weight: 700; gap: 10px; margin-top: 24px; transition: all 0.2s; }
+        .m3-fab-submit:active { transform: scale(0.97); filter: brightness(0.9); }
     </style>
 </head>
 <body id="app-body">
 
     <div id="offline-warning">
-        <span class="material-symbols-rounded text-[#D0BCFF]">wifi_off</span>
-        <span>Mode Offline Aktif</span>
+        <span class="material-symbols-rounded">wifi_off</span>
+        <span>Koneksi Terputus</span>
     </div>
 
     <header id="main-header">
-        <h1 id="h-title" class="font-extrabold text-2xl tracking-tight text-[#D0BCFF]">Request</h1>
+        <h1 id="h-title" class="font-bold text-xl tracking-tight text-white/95">Request</h1>
     </header>
 
     <!-- FAB Folders -->
     <div id="fab-daily" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/18_DNs4WHDtNw0QvqfZ0Uvx9sAgVVZlz9')">
-        <span class="material-symbols-rounded !text-2xl">folder_open</span>
+        <span class="material-symbols-rounded">folder_open</span>
     </div>
 
     <div id="fab-periodik" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y')">
-        <span class="material-symbols-rounded !text-2xl">folder_open</span>
+        <span class="material-symbols-rounded">folder_open</span>
     </div>
 
     <div id="scrim" onclick="closeSheet()"></div>
@@ -191,18 +192,18 @@
     <div id="sheet">
         <div class="sheet-handle"></div>
         <div class="sheet-header flex items-center px-4 pb-3 border-b border-white/5 flex-shrink-0">
-            <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center text-white/70">
+            <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center text-white/50">
                 <span class="material-symbols-rounded">close</span>
             </button>
-            <h2 id="s-title" class="text-[15px] font-bold flex-1 text-center truncate px-2 text-white/90">Pratinjau</h2>
-            <button id="btn-external" class="w-10 h-10 rounded-xl bg-[#4F378B] text-[#D0BCFF] flex items-center justify-center hidden">
+            <h2 id="s-title" class="text-sm font-bold flex-1 text-center truncate px-2 text-white/90 uppercase tracking-wider">Pratinjau</h2>
+            <button id="btn-external" class="w-10 h-10 rounded-xl bg-slate-800 text-sky-400 flex items-center justify-center hidden">
                 <span class="material-symbols-rounded !text-lg">open_in_new</span>
             </button>
             <div id="placeholder-btn" class="w-10"></div>
         </div>
         
         <div id="sheet-content-area">
-            <div id="loading-ui" class="absolute inset-0 flex items-center justify-center bg-[#1D1B20] z-20 hidden">
+            <div id="loading-ui" class="absolute inset-0 flex items-center justify-center bg-[#0F172A] z-20 hidden">
                 <svg class="m3-progress" viewBox="25 25 50 50">
                     <circle cx="50" cy="50" r="18"></circle>
                 </svg>
@@ -214,11 +215,11 @@
     <div class="page-container">
         <main class="h-full w-full">
             <div id="p1" class="page full-page">
-                <iframe id="iframe-daily" class="w-full h-full border-none bg-black" src="https://poharaayub.github.io/Daily-activity-for-client/" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
+                <iframe id="iframe-daily" class="w-full h-full border-none bg-slate-900" src="https://poharaayub.github.io/Daily-activity-for-client/" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
             </div>
             
             <div id="p2" class="page full-page">
-                <iframe id="iframe-periodik" class="w-full h-full border-none bg-black" src="about:blank" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
+                <iframe id="iframe-periodik" class="w-full h-full border-none bg-slate-900" src="about:blank" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
             </div>
             
             <div id="p3" class="page active"></div>
@@ -280,7 +281,7 @@
             p4: [
                 {l:"Daily Activity", i:"history_edu", url:"https://drive.google.com/drive/folders/18_DNs4WHDtNw0QvqfZ0Uvx9sAgVVZlz9", ext:true},
                 {l:"Periodik Cleaning", i:"cleaning_services", url:"https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y", ext:true},
-                {l:"Schedule Member", i:"calendar_today", url:"https://docs.google.com/spreadsheets/d/1TUSJ4jp6Ag7bFnUk54YpES1SKo8m_FBekuG-fShZaE8/edit"},
+                {l:"Schedule Member", i:"calendar_today", url:"https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/", ext:false},
                 {l:"Laporan Pencucian Box", i:"inventory", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit"},
                 {l:"Laporan Pencucian Pallet", i:"view_agenda", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit"},
                 {l:"Laporan Pembersihan Pallet Warehouse Tepung", i:"cleaning_bucket", url:"https://docs.google.com/spreadsheets/d/1C9Zrywvi_ggnHnKHB9fxUU9f-DCWaGNFJflKqbHVEnI/edit"},
@@ -341,7 +342,7 @@
         }
 
         function createCard(t, i, a, d="") {
-            return `<button class="card" onclick="${a}"><div class="c-icon"><span class="material-symbols-rounded">${i}</span></div><div class="flex-1 text-left"><div class="font-bold text-[16px] leading-tight text-white/90 mb-0.5">${t}</div>${d ? `<div class="text-[12px] text-[#CAC4D0] font-medium opacity-80">${d}</div>` : ''}</div><span class="material-symbols-rounded opacity-20 text-white">chevron_right</span></button>`;
+            return `<button class="card" onclick="${a}"><div class="c-icon"><span class="material-symbols-rounded">${i}</span></div><div class="flex-1 text-left"><div class="font-bold text-[16px] leading-tight text-white/90 mb-0.5">${t}</div>${d ? `<div class="text-[12px] text-slate-400 font-medium">${d}</div>` : ''}</div><span class="material-symbols-rounded opacity-20 text-white">chevron_right</span></button>`;
         }
 
         function openSheet(title) {
@@ -352,7 +353,7 @@
         }
 
         function openInSheet(title, url) {
-            if (!navigator.onLine) return showOfflineAlert();
+            if (!navigator.onLine) return;
             const container = document.getElementById('sheet-content');
             const loader = document.getElementById('loading-ui');
             const btnExt = document.getElementById('btn-external');
@@ -388,32 +389,32 @@
             let title = "";
 
             if (type === 'about_apps') {
-                title = "About Apps";
-                html = `<div class="px-6 py-10 flex flex-col items-center"><div class="w-16 h-16 rounded-2xl bg-[#4F378B] flex items-center justify-center mb-4"><span class="material-symbols-rounded text-[#D0BCFF] !text-3xl">deployed_code</span></div><h3 class="text-xl font-bold text-white mb-1">OCS Client Apps</h3><p class="text-white/40 text-xs font-medium mb-10 uppercase tracking-widest">Version 2.0.26</p><div class="w-full bg-white/5 border border-white/5 rounded-2xl p-4 space-y-3 mb-6"><div class="flex justify-between items-center"><span class="text-white/50 text-sm">Developer</span><span class="text-white font-semibold">Pohara Ayub</span></div><div class="h-[1px] bg-white/5 w-full"></div><div class="flex justify-between items-center"><span class="text-white/50 text-sm">Update</span><span class="text-white font-semibold">Januari 2026</span></div></div><button onclick="openMenuSheet('feedback_form')" class="w-full h-14 bg-[#D0BCFF] text-[#1D1B20] rounded-xl font-bold flex items-center justify-center gap-2">Kirim Feedback</button></div>`;
+                title = "Tentang Aplikasi";
+                html = `<div class="px-6 py-10 flex flex-col items-center"><div class="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center mb-4"><span class="material-symbols-rounded text-sky-400 !text-3xl">deployed_code</span></div><h3 class="text-xl font-bold text-white mb-1">OCS Client Apps</h3><p class="text-slate-500 text-xs font-medium mb-10 uppercase tracking-widest">Version 2.0.26</p><div class="w-full bg-slate-800/50 border border-white/5 rounded-2xl p-4 space-y-3 mb-6"><div class="flex justify-between items-center"><span class="text-slate-400 text-sm">Developer</span><span class="text-white font-semibold">Pohara Ayub</span></div><div class="h-[1px] bg-white/5 w-full"></div><div class="flex justify-between items-center"><span class="text-slate-400 text-sm">Update</span><span class="text-white font-semibold">Januari 2026</span></div></div><button onclick="openMenuSheet('feedback_form')" class="w-full h-14 bg-sky-400 text-[#0F172A] rounded-xl font-bold flex items-center justify-center gap-2">Kirim Feedback</button></div>`;
             } else if (type === 'feedback_form') {
                 title = "Feedback & Complaint";
                 html = `
                 <div class="px-6 py-4 flex flex-col">
                     <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 bg-[#4f378b] rounded-2xl flex items-center justify-center text-[#eaddff]">
+                        <div class="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center text-sky-400">
                             <i data-lucide="sparkles" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-[#d0bcff]">Feedback OCS NFI</h3>
+                            <h3 class="text-lg font-bold text-white">Feedback OCS NFI</h3>
                         </div>
                     </div>
                     <form id="feedbackForm" class="space-y-5">
                         <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-[#d0bcff] uppercase tracking-wider ml-1">Klien / Lokasi</label>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Klien / Lokasi</label>
                             <div class="m3-field flex items-center">
-                                <i data-lucide="map-pin" class="w-4 h-4 ml-4 text-[#938f99]"></i>
+                                <i data-lucide="map-pin" class="w-4 h-4 ml-4 text-slate-500"></i>
                                 <input type="text" id="f-name" class="m3-input-raw" required placeholder="Nama Klien atau Unit">
                             </div>
                         </div>
                         <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-[#d0bcff] uppercase tracking-wider ml-1">Kategori Layanan</label>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Kategori Layanan</label>
                             <div class="m3-field flex items-center relative">
-                                <i data-lucide="clipboard-check" class="w-4 h-4 ml-4 text-[#938f99]"></i>
+                                <i data-lucide="clipboard-check" class="w-4 h-4 ml-4 text-slate-500"></i>
                                 <select id="f-category" class="m3-input-raw pr-10 appearance-none" required>
                                     <option value="Kualitas Kebersihan">Kualitas Kebersihan</option>
                                     <option value="Kedisiplinan Petugas">Kedisiplinan Petugas</option>
@@ -421,11 +422,11 @@
                                     <option value="Alat & Kimia">Alat & Bahan Kimia</option>
                                     <option value="Komplain Urgen">Komplain Mendesak</option>
                                 </select>
-                                <i data-lucide="chevron-down" class="w-4 h-4 absolute right-4 text-[#938f99] pointer-events-none"></i>
+                                <i data-lucide="chevron-down" class="w-4 h-4 absolute right-4 text-slate-500 pointer-events-none"></i>
                             </div>
                         </div>
                         <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-[#d0bcff] uppercase tracking-wider ml-1">Komentar / Detail</label>
+                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Komentar / Detail</label>
                             <div class="m3-field">
                                 <textarea id="f-message" class="m3-input-raw" rows="4" required placeholder="Tuliskan detail masukan Anda..."></textarea>
                             </div>
@@ -452,12 +453,7 @@
             const category = document.getElementById('f-category').value;
             const message = document.getElementById('f-message').value;
 
-            if(!name || !message) {
-                // Simple validation instead of alert
-                document.getElementById('f-name').style.borderColor = !name ? '#ffb4ab' : '';
-                document.getElementById('f-message').style.borderColor = !message ? '#ffb4ab' : '';
-                return;
-            }
+            if(!name || !message) return;
 
             const targetNumber = "6289637126728";
             const waText = `*FEEDBACK OCS NFI*%0A` +
@@ -479,9 +475,9 @@
         }
 
         function closeSheet() { document.getElementById('app-body').classList.remove('sheet-visible'); if(sheetIsOpen) history.back(); sheetIsOpen = false; }
-        function handleExternalClick(url) { if (!navigator.onLine) return showOfflineAlert(); window.open(url, '_blank'); }
+        function handleExternalClick(url) { if (!navigator.onLine) return; window.open(url, '_blank'); }
         window.onpopstate = () => { if(sheetIsOpen) { document.getElementById('app-body').classList.remove('sheet-visible'); sheetIsOpen=false; } };
-        function chat(p, m) { if (!navigator.onLine) return showOfflineAlert(); window.open(`https://wa.me/${p}?text=${encodeURIComponent(m)}`, '_blank'); }
+        function chat(p, m) { if (!navigator.onLine) return; window.open(`https://wa.me/${p}?text=${encodeURIComponent(m)}`, '_blank'); }
 
         window.onload = () => { 
             updateNetworkStatus(); 
