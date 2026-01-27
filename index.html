@@ -3,29 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#0F172A">
+    <meta name="theme-color" content="#F8FAFC">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>OCS NFI APPS 2026 Client</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
-    <!-- Lucide Icons for Feedback Form -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         :root {
-            /* Formal Midnight Theme Palette */
-            --m3-bg: #0F172A; /* Deep Navy */
-            --m3-surface: #1E293B; /* Slate 800 */
-            --m3-surface-container-high: #334155; /* Slate 700 */
-            --m3-primary: #94A3B8; /* Slate 400 (Muted Steel) */
-            --m3-primary-container: #1E293B; 
-            --m3-on-primary-container: #F8FAFC;
-            --m3-secondary-container: #334155;
-            --m3-on-secondary-container: #F1F5F9;
-            --m3-on-surface: #F8FAFC;
-            --m3-on-surface-variant: #94A3B8;
-            --accent-blue: #38BDF8; /* Sky Blue for subtle focus */
+            --m3-bg: #F8FAFC; 
+            --m3-surface: #FFFFFF; 
+            --m3-surface-container: #F1F5F9; 
+            --m3-primary: #0F172A; 
+            --m3-on-surface: #0F172A;
+            --m3-on-surface-variant: #64748B;
+            --accent-blue: #0284C7; 
             --nav-height: 72px;
             --nav-bottom-margin: 20px;
         }
@@ -44,14 +38,13 @@
             bottom: calc(var(--nav-height) + var(--nav-bottom-margin) + 24px + env(safe-area-inset-bottom));
             left: 50%;
             transform: translateX(-50%) translateY(100px);
-            background: #1E293B; 
-            color: var(--accent-blue);
+            background: #EF4444; 
+            color: white;
             padding: 12px 20px;
             border-radius: 16px;
             font-size: 13px; font-weight: 600;
             z-index: 100; display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
             width: calc(100% - 48px); max-width: 400px;
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
             opacity: 0; pointer-events: none;
@@ -60,10 +53,10 @@
 
         header {
             padding: calc(env(safe-area-inset-top) + 16px) 24px 16px;
-            background: rgba(15, 23, 42, 0.85);
+            background: rgba(248, 250, 252, 0.85);
             backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             position: fixed; top: 0; left: 0; right: 0; z-index: 40;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
             display: flex; align-items: center;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -80,74 +73,64 @@
         .page.active { display: block; opacity: 1; animation: fade-in 0.3s ease-out forwards; }
 
         @keyframes fade-in { 
-            from { opacity: 0; transform: translateY(15px); } 
+            from { opacity: 0; transform: translateY(10px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
         nav {
             position: fixed; bottom: calc(var(--nav-bottom-margin) + env(safe-area-inset-bottom)); 
             left: 16px; right: 16px; height: var(--nav-height); 
-            background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
             display: flex; justify-content: space-around; align-items: center;
-            z-index: 50; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.5); padding: 0 8px;
+            z-index: 50; border-radius: 24px; border: 1px solid rgba(15, 23, 42, 0.08);
+            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12); padding: 0 8px;
         }
         
         .n-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; height: 100%; transition: all 0.2s ease; cursor: pointer; }
-        .n-btn:active { transform: scale(0.9); }
         .icon-wrapper { width: 54px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 16px; transition: all 0.3s cubic-bezier(0.2, 0, 0, 1); color: var(--m3-on-surface-variant); margin-bottom: 2px; }
-        .n-btn.active .icon-wrapper { background-color: var(--accent-blue); color: #0F172A; }
+        .n-btn.active .icon-wrapper { background-color: var(--accent-blue); color: #FFFFFF; }
         .n-btn .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400; font-size: 24px; }
         .n-btn.active .material-symbols-rounded { font-variation-settings: 'FILL' 1, 'wght' 400; }
-        .n-txt { font-size: 10px; font-weight: 600; color: var(--m3-on-surface-variant); letter-spacing: 0.2px; }
+        .n-txt { font-size: 10px; font-weight: 700; color: var(--m3-on-surface-variant); letter-spacing: 0.2px; }
         .n-btn.active .n-txt { color: var(--accent-blue); }
 
         .card { 
-            background: var(--m3-surface); padding: 16px 20px; margin-bottom: 12px; border-radius: 16px; 
-            display: flex; align-items: center; width: 100%; border: 1px solid rgba(255,255,255,0.05);
-            color: inherit; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            background: var(--m3-surface); padding: 18px 20px; margin-bottom: 12px; border-radius: 20px; 
+            display: flex; align-items: center; width: 100%; border: 1px solid rgba(15, 23, 42, 0.05);
+            color: inherit; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
         }
-        .card:active { transform: scale(0.98); background: var(--m3-surface-container-high); }
-        .c-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--m3-surface-container-high); color: var(--accent-blue); display: flex; align-items: center; justify-content: center; margin-right: 14px; flex-shrink: 0; }
+        .card:active { transform: scale(0.98); background: var(--m3-surface-container); }
+        .c-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--m3-surface-container); color: var(--accent-blue); display: flex; align-items: center; justify-content: center; margin-right: 14px; flex-shrink: 0; }
 
         .fab { 
             width: 56px; height: 56px; border-radius: 18px; display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: fixed; 
+            box-shadow: 0 8px 24px rgba(2, 132, 199, 0.3); position: fixed; 
             bottom: calc(var(--nav-height) + var(--nav-bottom-margin) + 24px + env(safe-area-inset-bottom)); 
             right: 20px; z-index: 60; transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-            background: var(--accent-blue); color: #0F172A;
+            background: var(--accent-blue); color: white;
             transform: scale(0); opacity: 0; pointer-events: none;
         }
-        .fab.visible { transform: scale(1); opacity: 1; pointer-events: auto; animation: folder-shake 4s infinite ease-in-out; }
+        .fab.visible { transform: scale(1); opacity: 1; pointer-events: auto; }
         
-        @keyframes folder-shake {
-            0%, 80%, 100% { transform: scale(1) rotate(0deg); }
-            82% { transform: scale(1.1) rotate(5deg); }
-            84% { transform: scale(1.1) rotate(-5deg); }
-            86% { transform: scale(1.1) rotate(5deg); }
-            88% { transform: scale(1.1) rotate(-5deg); }
-            90% { transform: scale(1) rotate(0deg); }
-        }
-
-        #scrim { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(8px); }
+        #scrim { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(4px); }
         
         #sheet { 
             position: fixed; bottom: 0; left: 0; right: 0; 
             background: var(--m3-bg); z-index: 1001; 
             display: flex; flex-direction: column;
-            border-radius: 24px 24px 0 0;
-            box-shadow: 0 -8px 40px rgba(0,0,0,0.8);
+            border-radius: 32px 32px 0 0;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.1);
             transform: translateY(100%);
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             height: 92vh; 
             max-width: 640px; margin: 0 auto; 
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(0,0,0,0.05);
         }
 
         .sheet-visible #sheet { transform: translateY(0); }
         .sheet-visible #scrim { display: block; opacity: 1; }
 
-        .sheet-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 10px; margin: 12px auto 14px; flex-shrink: 0; }
+        .sheet-handle { width: 36px; height: 5px; background: #CBD5E1; border-radius: 10px; margin: 12px auto 14px; flex-shrink: 0; }
 
         #sheet-content-area { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
         #sheet-content { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; padding-bottom: calc(24px + env(safe-area-inset-bottom)); }
@@ -157,53 +140,55 @@
         @keyframes m3-rotate-container { to { transform: rotate(360deg); } }
         @keyframes m3-stroke-dynamic { 0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; } 50% { stroke-dasharray: 95, 200; stroke-dashoffset: -30px; } 100% { stroke-dasharray: 1, 200; stroke-dashoffset: -125px; } }
 
-        .sheet-iframe { width: 100%; height: 100%; border: none; background: #f8fafc; }
+        .sheet-iframe { width: 100%; height: 100%; border: none; background: white; }
 
-        /* Form styling updates */
-        .m3-field { background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: all 0.3s ease; }
-        .m3-field:focus-within { border-color: var(--accent-blue); box-shadow: 0 0 0 1px var(--accent-blue); }
-        .m3-input-raw { background: transparent; border: none; outline: none; color: #f8fafc; width: 100%; padding: 14px 16px; font-size: 15px; }
-        .m3-fab-submit { background: var(--accent-blue); color: #0F172A; border-radius: 14px; height: 56px; display: flex; align-items: center; justify-content: center; font-weight: 700; gap: 10px; margin-top: 24px; transition: all 0.2s; }
-        .m3-fab-submit:active { transform: scale(0.97); filter: brightness(0.9); }
+        .m3-field { background: #F1F5F9; border: 1px solid #E2E8F0; border-radius: 14px; transition: all 0.3s ease; }
+        .m3-field:focus-within { border-color: var(--accent-blue); background: white; box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1); }
+        .m3-input-raw { background: transparent; border: none; outline: none; color: var(--m3-on-surface); width: 100%; padding: 14px 16px; font-size: 15px; font-weight: 500; }
+        
+        .m3-fab-submit { background: var(--accent-blue); color: white; border-radius: 16px; height: 56px; display: flex; align-items: center; justify-content: center; font-weight: 700; gap: 10px; margin-top: 24px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); }
     </style>
 </head>
 <body id="app-body">
 
     <div id="offline-warning">
         <span class="material-symbols-rounded">wifi_off</span>
-        <span>Koneksi Terputus</span>
+        <span>Koneksi Terputus - Periksa internet Anda</span>
     </div>
 
     <header id="main-header">
-        <h1 id="h-title" class="font-bold text-xl tracking-tight text-white/95">Request</h1>
+        <div class="flex items-center justify-between w-full">
+            <h1 id="h-title" class="font-extrabold text-xl tracking-tight text-slate-900 truncate">Request</h1>
+            <span class="text-[9px] font-extrabold text-sky-700 bg-sky-50 px-2.5 py-1 rounded-lg uppercase tracking-wider border border-sky-100 flex-shrink-0">OCS NFI Apps 26</span>
+        </div>
     </header>
 
-    <!-- FAB Folders -->
+    <!-- FAB Folders - Menggunakan link asli sesuai instruksi -->
     <div id="fab-daily" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/18_DNs4WHDtNw0QvqfZ0Uvx9sAgVVZlz9')">
-        <span class="material-symbols-rounded">folder_open</span>
+        <span class="material-symbols-rounded">folder_zip</span>
     </div>
 
     <div id="fab-periodik" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y')">
-        <span class="material-symbols-rounded">folder_open</span>
+        <span class="material-symbols-rounded">folder_zip</span>
     </div>
 
     <div id="scrim" onclick="closeSheet()"></div>
     
     <div id="sheet">
         <div class="sheet-handle"></div>
-        <div class="sheet-header flex items-center px-4 pb-3 border-b border-white/5 flex-shrink-0">
-            <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center text-white/50">
+        <div class="sheet-header flex items-center px-4 pb-3 border-b border-slate-100 flex-shrink-0">
+            <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center text-slate-400">
                 <span class="material-symbols-rounded">close</span>
             </button>
-            <h2 id="s-title" class="text-sm font-bold flex-1 text-center truncate px-2 text-white/90 uppercase tracking-wider">Pratinjau</h2>
-            <button id="btn-external" class="w-10 h-10 rounded-xl bg-slate-800 text-sky-400 flex items-center justify-center hidden">
+            <h2 id="s-title" class="text-xs font-extrabold flex-1 text-center truncate px-2 text-slate-900 uppercase tracking-widest">Detail Layanan</h2>
+            <button id="btn-external" class="w-10 h-10 rounded-xl bg-slate-100 text-sky-700 flex items-center justify-center hidden">
                 <span class="material-symbols-rounded !text-lg">open_in_new</span>
             </button>
             <div id="placeholder-btn" class="w-10"></div>
         </div>
         
         <div id="sheet-content-area">
-            <div id="loading-ui" class="absolute inset-0 flex items-center justify-center bg-[#0F172A] z-20 hidden">
+            <div id="loading-ui" class="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-20 hidden">
                 <svg class="m3-progress" viewBox="25 25 50 50">
                     <circle cx="50" cy="50" r="18"></circle>
                 </svg>
@@ -215,11 +200,11 @@
     <div class="page-container">
         <main class="h-full w-full">
             <div id="p1" class="page full-page">
-                <iframe id="iframe-daily" class="w-full h-full border-none bg-slate-900" src="https://poharaayub.github.io/Daily-activity-for-client/" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
+                <iframe id="iframe-daily" class="w-full h-full border-none bg-white" src="https://poharaayub.github.io/Daily-activity-for-client/" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
             </div>
             
             <div id="p2" class="page full-page">
-                <iframe id="iframe-periodik" class="w-full h-full border-none bg-slate-900" src="about:blank" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
+                <iframe id="iframe-periodik" class="w-full h-full border-none bg-white" src="about:blank" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share" loading="lazy"></iframe>
             </div>
             
             <div id="p3" class="page active"></div>
@@ -230,7 +215,7 @@
 
     <nav id="floating-nav">
         <div class="n-btn" onclick="go('p1', 'Daily Activity', this)">
-            <div class="icon-wrapper"><span class="material-symbols-rounded">dashboard</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">analytics</span></div>
             <span class="n-txt">Daily</span>
         </div>
         <div class="n-btn" onclick="go('p2', 'Periodik', this)">
@@ -238,15 +223,15 @@
             <span class="n-txt">Periodik</span>
         </div>
         <div id="default-nav-btn" class="n-btn active" onclick="go('p3', 'Request', this)">
-            <div class="icon-wrapper"><span class="material-symbols-rounded">add_circle</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">add_box</span></div>
             <span class="n-txt">Request</span>
         </div>
         <div class="n-btn" onclick="go('p4', 'Laporan', this)">
-            <div class="icon-wrapper"><span class="material-symbols-rounded">assignment</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">description</span></div>
             <span class="n-txt">Laporan</span>
         </div>
         <div class="n-btn" onclick="go('p5', 'Member', this)">
-            <div class="icon-wrapper"><span class="material-symbols-rounded">group</span></div>
+            <div class="icon-wrapper"><span class="material-symbols-rounded">badge</span></div>
             <span class="n-txt">Member</span>
         </div>
     </nav>
@@ -274,19 +259,19 @@
 
         const menuData = {
             p3: [
-                {l:"Request ke Team Leader", i:"hail", s:"req_tl"}, 
-                {l:"Request ke Cleaner", i:"cleaning_services", s:"req_cso"},
-                {l:"Feedback & Complaint", i:"forum", s:"feedback_form"}
+                {l:"Request ke Team Leader", i:"contact_support", s:"req_tl"}, 
+                {l:"Request ke Cleaner", i:"mop", s:"req_cso"},
+                {l:"Feedback & Komplain", i:"rate_review", s:"feedback_form"}
             ],
             p4: [
-                {l:"Daily Activity", i:"history_edu", url:"https://drive.google.com/drive/folders/18_DNs4WHDtNw0QvqfZ0Uvx9sAgVVZlz9", ext:true},
-                {l:"Periodik Cleaning", i:"cleaning_services", url:"https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y", ext:true},
-                {l:"Schedule Member", i:"calendar_today", url:"https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/", ext:false},
-                {l:"Laporan Pencucian Box", i:"inventory", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit"},
-                {l:"Laporan Pencucian Pallet", i:"view_agenda", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit"},
-                {l:"Laporan Pembersihan Pallet Warehouse Tepung", i:"cleaning_bucket", url:"https://docs.google.com/spreadsheets/d/1C9Zrywvi_ggnHnKHB9fxUU9f-DCWaGNFJflKqbHVEnI/edit"},
-                {l:"Big Cleaning", i:"folder_shared", url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz", ext:true},
-                {l:"About Apps", i:"info", s:"about_apps"}
+                {l:"Daily Activity", i:"history_edu", url:"https://drive.google.com/drive/folders/1s5BLnmuqGbP3XHq0d30Y1xCUk-tiTejy", ext:true},
+                {l:"Periodik Cleaning", i:"cleaning_services", url:"https://drive.google.com/drive/folders/1Q7djVthlF5452-4H1NZJVw6Cm3fn7zS8", ext:true},
+                {l:"Jadwal Shift Member", i:"calendar_month", url:"https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/", ext:false},
+                {l:"Laporan Cuci Box", i:"inventory_2", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit"},
+                {l:"Laporan Cuci Pallet", i:"grid_view", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit"},
+                {l:"Pembersihan Pallet WH", i:"cleaning_bucket", url:"https://docs.google.com/spreadsheets/d/1C9Zrywvi_ggnHnKHB9fxUU9f-DCWaGNFJflKqbHVEnI/edit?usp=drivesdk"},
+                {l:"Arsip Big Cleaning", i:"folder_shared", url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz", ext:true},
+                {l:"Tentang Aplikasi", i:"info", s:"about_apps"}
             ]
         };
 
@@ -299,8 +284,8 @@
             const prevActive = document.querySelector('.page.active');
             if(prevActive) {
                 prevActive.style.opacity = '0';
-                prevActive.style.transform = 'translateY(10px)';
-                setTimeout(() => prevActive.classList.remove('active'), 200);
+                prevActive.style.transform = 'translateY(8px)';
+                setTimeout(() => prevActive.classList.remove('active'), 150);
             }
 
             setTimeout(() => {
@@ -308,7 +293,7 @@
                 current.classList.add('active');
                 current.style.opacity = '1';
                 current.style.transform = 'translateY(0)';
-            }, 250);
+            }, 200);
             
             const header = document.getElementById('main-header');
             const fabDaily = document.getElementById('fab-daily');
@@ -331,7 +316,7 @@
             const container = document.getElementById(id);
             if(!container || id === 'p2' || id === 'p1') return;
             if(id === 'p5') {
-                container.innerHTML = `<div class="pb-4">${members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}')`, m.d)).join('')}</div>`;
+                container.innerHTML = `<div class="pb-4">${members.map(m => createCard(m.n, "account_circle", `chat('${m.p}', 'Halo ${m.n}')`, m.d)).join('')}</div>`;
                 return;
             }
             if(!menuData[id]) return;
@@ -342,7 +327,7 @@
         }
 
         function createCard(t, i, a, d="") {
-            return `<button class="card" onclick="${a}"><div class="c-icon"><span class="material-symbols-rounded">${i}</span></div><div class="flex-1 text-left"><div class="font-bold text-[16px] leading-tight text-white/90 mb-0.5">${t}</div>${d ? `<div class="text-[12px] text-slate-400 font-medium">${d}</div>` : ''}</div><span class="material-symbols-rounded opacity-20 text-white">chevron_right</span></button>`;
+            return `<button class="card" onclick="${a}"><div class="c-icon"><span class="material-symbols-rounded">${i}</span></div><div class="flex-1 text-left"><div class="font-bold text-[15px] leading-tight text-slate-800 mb-0.5">${t}</div>${d ? `<div class="text-[11px] text-slate-500 font-semibold uppercase tracking-wide">${d}</div>` : ''}</div><span class="material-symbols-rounded text-slate-300">chevron_right</span></button>`;
         }
 
         function openSheet(title) {
@@ -363,7 +348,6 @@
             btnExt.classList.remove('hidden'); placeholder.classList.add('hidden');
             
             container.innerHTML = ''; 
-            container.classList.remove('bg-white'); 
             loader.classList.remove('hidden');
 
             const pUrl = url.includes('spreadsheets') ? url.replace(/\/edit.*$/, '/preview') : url;
@@ -373,7 +357,6 @@
             f.onload = () => { 
                 loader.classList.add('hidden'); 
                 f.classList.remove('opacity-0'); 
-                container.classList.add('bg-white'); 
             };
             container.appendChild(f);
             openSheet(title);
@@ -384,56 +367,57 @@
             const btnExt = document.getElementById('btn-external');
             const placeholder = document.getElementById('placeholder-btn');
             btnExt.classList.add('hidden'); placeholder.classList.remove('hidden');
-            content.classList.remove('bg-white');
-            let html = '<div class="px-5 py-4 pb-10">';
+            
+            let html = '<div class="px-5 py-2 pb-10">';
             let title = "";
 
             if (type === 'about_apps') {
-                title = "Tentang Aplikasi";
-                html = `<div class="px-6 py-10 flex flex-col items-center"><div class="w-16 h-16 rounded-2xl bg-slate-800 flex items-center justify-center mb-4"><span class="material-symbols-rounded text-sky-400 !text-3xl">deployed_code</span></div><h3 class="text-xl font-bold text-white mb-1">OCS Client Apps</h3><p class="text-slate-500 text-xs font-medium mb-10 uppercase tracking-widest">Version 2.0.26</p><div class="w-full bg-slate-800/50 border border-white/5 rounded-2xl p-4 space-y-3 mb-6"><div class="flex justify-between items-center"><span class="text-slate-400 text-sm">Developer</span><span class="text-white font-semibold">Pohara Ayub</span></div><div class="h-[1px] bg-white/5 w-full"></div><div class="flex justify-between items-center"><span class="text-slate-400 text-sm">Update</span><span class="text-white font-semibold">Januari 2026</span></div></div><button onclick="openMenuSheet('feedback_form')" class="w-full h-14 bg-sky-400 text-[#0F172A] rounded-xl font-bold flex items-center justify-center gap-2">Kirim Feedback</button></div>`;
+                title = "Informasi";
+                html = `<div class="px-6 py-10 flex flex-col items-center"><div class="w-16 h-16 rounded-2xl bg-sky-50 flex items-center justify-center mb-4"><span class="material-symbols-rounded text-sky-700 !text-3xl">verified_user</span></div><h3 class="text-xl font-extrabold text-slate-900 mb-1">OCS Client Apps</h3><p class="text-slate-400 text-xs font-bold mb-10 uppercase tracking-widest">Version 2026.1</p><div class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-5 space-y-4 mb-8"><div class="flex justify-between items-center"><span class="text-slate-500 text-sm font-medium">Developer</span><span class="text-slate-900 font-bold">Pohara Ayub</span></div><div class="h-[1px] bg-slate-200 w-full"></div><div class="flex justify-between items-center"><span class="text-slate-500 text-sm font-medium">Layanan</span><span class="text-slate-900 font-bold">Professional Cleaning</span></div></div><button onclick="openMenuSheet('feedback_form')" class="w-full h-14 bg-slate-900 text-white rounded-xl font-bold flex items-center justify-center gap-2">Beri Masukan</button></div>`;
             } else if (type === 'feedback_form') {
-                title = "Feedback & Complaint";
+                title = "Form Masukan";
                 html = `
                 <div class="px-6 py-4 flex flex-col">
-                    <div class="flex items-center gap-4 mb-6">
-                        <div class="w-12 h-12 bg-slate-800 rounded-2xl flex items-center justify-center text-sky-400">
-                            <i data-lucide="sparkles" class="w-6 h-6"></i>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class="w-12 h-12 bg-sky-100 rounded-2xl flex items-center justify-center text-sky-700">
+                            <i data-lucide="message-square" class="w-6 h-6"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-bold text-white">Feedback OCS NFI</h3>
+                            <h3 class="text-lg font-bold text-slate-900">Umpan Balik Klien</h3>
+                            <p class="text-xs text-slate-500 font-medium">Suara Anda sangat berharga bagi kami</p>
                         </div>
                     </div>
                     <form id="feedbackForm" class="space-y-5">
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Klien / Lokasi</label>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1">Lokasi / Unit Kerja</label>
                             <div class="m3-field flex items-center">
-                                <i data-lucide="map-pin" class="w-4 h-4 ml-4 text-slate-500"></i>
-                                <input type="text" id="f-name" class="m3-input-raw" required placeholder="Nama Klien atau Unit">
+                                <i data-lucide="map-pin" class="w-4 h-4 ml-4 text-slate-400"></i>
+                                <input type="text" id="f-name" class="m3-input-raw" required placeholder="Contoh: Gedung A / Lantai 2">
                             </div>
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Kategori Layanan</label>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1">Kategori Layanan</label>
                             <div class="m3-field flex items-center relative">
-                                <i data-lucide="clipboard-check" class="w-4 h-4 ml-4 text-slate-500"></i>
+                                <i data-lucide="layers" class="w-4 h-4 ml-4 text-slate-400"></i>
                                 <select id="f-category" class="m3-input-raw pr-10 appearance-none" required>
                                     <option value="Kualitas Kebersihan">Kualitas Kebersihan</option>
                                     <option value="Kedisiplinan Petugas">Kedisiplinan Petugas</option>
-                                    <option value="Sikap/Etika">Sikap & Etika</option>
-                                    <option value="Alat & Kimia">Alat & Bahan Kimia</option>
-                                    <option value="Komplain Urgen">Komplain Mendesak</option>
+                                    <option value="Keramah-tamahan">Sikap & Etika</option>
+                                    <option value="Kelengkapan Alat">Alat & Bahan Kimia</option>
+                                    <option value="Komplain Mendesak">Komplain Mendesak</option>
                                 </select>
-                                <i data-lucide="chevron-down" class="w-4 h-4 absolute right-4 text-slate-500 pointer-events-none"></i>
+                                <i data-lucide="chevron-down" class="w-4 h-4 absolute right-4 text-slate-400 pointer-events-none"></i>
                             </div>
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider ml-1">Komentar / Detail</label>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest ml-1">Detail Masukan</label>
                             <div class="m3-field">
-                                <textarea id="f-message" class="m3-input-raw" rows="4" required placeholder="Tuliskan detail masukan Anda..."></textarea>
+                                <textarea id="f-message" class="m3-input-raw" rows="4" required placeholder="Ceritakan detail kendala atau saran Anda..."></textarea>
                             </div>
                         </div>
                         <button type="button" onclick="submitFeedback()" class="m3-fab-submit w-full">
                             <i data-lucide="send" class="w-5 h-5"></i>
-                            KIRIM VIA WHATSAPP
+                            KIRIM LAPORAN
                         </button>
                     </form>
                 </div>`;
@@ -441,7 +425,7 @@
             } else {
                 title = type==='req_tl'?"Request ke TL":"Request ke CSO";
                 const list = type==='req_tl' ? members.filter(m=>m.d.includes("Leader")||m.d.includes("Manager")) : members.filter(m=>!m.d.includes("Leader")&&!m.d.includes("Manager"));
-                list.forEach(m => html += createCard(m.n, "account_circle", `chat('${m.p}','Halo tolong bantu area ini')`, m.d));
+                list.forEach(m => html += createCard(m.n, "account_box", `chat('${m.p}','Halo tolong bantu area ini')`, m.d));
                 html += '</div>';
             }
             content.innerHTML = html;
@@ -452,21 +436,17 @@
             const name = document.getElementById('f-name').value;
             const category = document.getElementById('f-category').value;
             const message = document.getElementById('f-message').value;
-
             if(!name || !message) return;
-
             const targetNumber = "6289637126728";
-            const waText = `*FEEDBACK OCS NFI*%0A` +
+            const waText = `*FEEDBACK OCS NFI CLIENT*%0A` +
                            `----------------------------%0A` +
                            `*📍 Lokasi:* ${name}%0A` +
                            `*🧹 Kategori:* ${category}%0A` +
                            `*💬 Pesan:* ${message}%0A` +
                            `----------------------------%0A` +
                            `_Sent via OCS Client Apps_`;
-
             const loader = document.getElementById('loading-ui');
             loader.classList.remove('hidden');
-            
             setTimeout(() => {
                 loader.classList.add('hidden');
                 window.open(`https://api.whatsapp.com/send?phone=${targetNumber}&text=${waText}`, '_blank');
