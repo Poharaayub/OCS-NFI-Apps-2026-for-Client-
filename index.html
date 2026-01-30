@@ -13,15 +13,12 @@
     
     <style>
         :root {
-            /* M3 Navy Blue Palette */
             --md-sys-color-primary: #003366; 
             --md-sys-color-on-primary: #FFFFFF;
             --md-sys-color-primary-container: #D6E2FF;
             --md-sys-color-on-primary-container: #001B3E;
-            
             --md-sys-color-secondary: #535F70; 
             --md-sys-color-secondary-container: #D7E3F7;
-            
             --md-sys-color-surface: #F8F9FF; 
             --md-sys-color-surface-container: #EEF0F6;
             --md-sys-color-on-surface: #1A1C1E;
@@ -31,6 +28,7 @@
             --nav-height: 84px;
             --header-height-expanded: 120px;
             --header-height-collapsed: 64px;
+            --max-app-width: 768px; 
         }
 
         * { 
@@ -41,19 +39,30 @@
         }
 
         body { 
-            background-color: var(--md-sys-color-surface); 
+            background-color: #E2E8F0; 
             height: 100dvh; width: 100vw; overflow: hidden;
-            color: var(--md-sys-color-on-surface);
-            -webkit-font-smoothing: antialiased;
-            position: fixed; 
+            display: flex; justify-content: center;
         }
 
-        /* --- Header Styles --- */
+        .app-shell {
+            background-color: var(--md-sys-color-surface);
+            width: 100%;
+            max-width: var(--max-app-width);
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        body.sheet-visible { overflow: hidden; position: fixed; width: 100%; }
+
         header {
             height: calc(var(--header-height-expanded) + env(safe-area-inset-top));
             padding: calc(env(safe-area-inset-top) + 8px) 24px 20px;
             background: var(--md-sys-color-surface);
-            position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+            position: absolute; top: 0; left: 0; right: 0; z-index: 40;
             display: flex; flex-direction: column; justify-content: flex-end;
             transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
         }
@@ -83,8 +92,7 @@
 
         header.scrolled .header-title { font-size: 20px; }
 
-        /* --- Layout & Navigation --- */
-        .page-container { height: 100dvh; width: 100%; position: relative; }
+        .page-container { height: 100%; width: 100%; position: relative; flex: 1; }
 
         .page { 
             display: none; height: 100%; width: 100%; 
@@ -95,7 +103,7 @@
         
         .page.full-page { 
             padding: 0 !important; 
-            height: calc(100dvh - (var(--nav-height) + env(safe-area-inset-bottom)));
+            height: calc(100% - (var(--nav-height) + env(safe-area-inset-bottom)));
             z-index: 10; 
         }
         .page.active { display: block; animation: m3-entry 0.4s cubic-bezier(0.2, 0, 0, 1); }
@@ -106,21 +114,22 @@
         }
 
         nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
+            position: absolute; bottom: 0; left: 0; right: 0;
             height: calc(var(--nav-height) + env(safe-area-inset-bottom));
             background: var(--md-sys-color-surface-container); 
             display: flex; justify-content: center; align-items: center; 
             z-index: 50; padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -1px 0 rgba(0,0,0,0.05);
         }
         
         .n-btn { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             height: 100%; flex: 1; color: var(--md-sys-color-on-surface-variant); 
-            gap: 4px; transition: all 0.2s;
+            gap: 4px; transition: all 0.2s; cursor: pointer;
         }
         
         .icon-pill {
-            width: 60px; height: 32px;
+            width: 64px; height: 32px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 100px;
             transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
@@ -137,15 +146,28 @@
         .n-txt { font-size: 11px; font-weight: 500; letter-spacing: 0.1px; }
         .n-btn.active .n-txt { color: var(--md-sys-color-primary); font-weight: 700; }
 
-        /* --- Cards --- */
-        .card-list { display: flex; flex-direction: column; gap: 8px; }
+        .card-list { 
+            display: grid; 
+            grid-template-columns: 1fr; 
+            gap: 12px; 
+            width: 100%;
+        }
+
+        @media (min-width: 640px) {
+            .card-list {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
         .card { 
-            background: #FFFFFF; padding: 18px 24px; 
+            background: #FFFFFF; padding: 18px 20px; 
             display: flex; align-items: center; width: 100%;
             border-radius: 20px; transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
             border: none;
-            box-shadow: 0 1px 2px rgba(0, 51, 102, 0.05);
+            box-shadow: 0 1px 3px rgba(0, 51, 102, 0.08);
+            cursor: pointer;
         }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 51, 102, 0.1); }
         .card:active { background: #F2F5FF; transform: scale(0.97); }
         
         .c-icon { 
@@ -160,58 +182,72 @@
         .card-title { font-weight: 700; font-size: 15px; color: var(--md-sys-color-on-surface); line-height: 1.25; }
         .card-desc { font-size: 12px; color: var(--md-sys-color-on-surface-variant); font-weight: 500; margin-top: 2px; opacity: 0.8; }
 
+        /* --- M3 Large FAB Design (Terbaru) --- */
         .fab { 
-            width: 56px; height: 56px; border-radius: 18px; 
+            width: 56px; height: 56px; 
+            border-radius: 18px; /* M3 Standard FAB */
             display: flex; align-items: center; justify-content: center; 
-            position: fixed; bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 24px); 
-            right: 20px; z-index: 60; background: var(--md-sys-color-primary); color: white;
-            box-shadow: 0 8px 16px rgba(0, 51, 102, 0.2);
-            transform: scale(0); opacity: 0; transition: 0.4s cubic-bezier(0.2, 0, 0, 1.2);
+            position: absolute; bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 24px); 
+            right: 20px; z-index: 60; 
+            background: var(--md-sys-color-primary-container); 
+            color: var(--md-sys-color-on-primary-container);
+            box-shadow: 0 4px 8px rgba(0, 30, 60, 0.15);
+            transform: scale(0) translateY(20px); opacity: 0; 
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            cursor: pointer;
         }
-        .fab.visible { transform: scale(1); opacity: 1; }
+        
+        .fab.visible { transform: scale(1) translateY(0); opacity: 1; }
+        
+        .fab:hover {
+            box-shadow: 0 6px 12px rgba(0, 30, 60, 0.2);
+            background: #C4D7FF; /* Slightly darker container hover */
+        }
+        
+        .fab:active { 
+            transform: scale(0.92); 
+            box-shadow: 0 2px 4px rgba(0, 30, 60, 0.1);
+        }
 
-        /* --- M3 Bottom Sheet Responsivitas --- */
+        .fab .material-symbols-rounded {
+            font-size: 24px;
+            font-variation-settings: 'FILL' 0, 'wght' 400;
+        }
+
         #scrim { 
-            position: fixed; inset: 0; background: rgba(0, 10, 30, 0.4); 
+            position: absolute; inset: 0; background: rgba(0, 10, 30, 0.4); 
             z-index: 1000; visibility: hidden; opacity: 0;
             transition: opacity 0.3s ease, visibility 0.3s;
-            backdrop-filter: blur(2px);
+            backdrop-filter: none;
         }
         
         #sheet { 
-            position: fixed; bottom: 0; left: 0; right: 0; 
+            position: absolute; bottom: 0; left: 0; right: 0; 
             background: #FFFFFF; z-index: 1001; 
             border-radius: 28px 28px 0 0; 
             transform: translateY(105%);
-            transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
-            height: 90dvh;
-            height: 90svh; /* Menggunakan svh untuk dukungan mobile yang lebih baik */
+            transition: transform 0.45s cubic-bezier(0.1, 0.9, 0.2, 1);
+            height: 95%;
             width: 100%;
-            max-width: 640px; 
-            margin: 0 auto;
             display: flex; flex-direction: column;
-            box-shadow: 0 -8px 32px rgba(0, 20, 50, 0.15);
+            box-shadow: 0 -8px 40px rgba(0, 20, 50, 0.2);
             overflow: hidden;
             will-change: transform;
-        }
-
-        /* Responsivitas Desktop: Menyesuaikan radius jika tidak full-width */
-        @media (min-width: 641px) {
-            #sheet { border-radius: 28px 28px 0 0; }
+            touch-action: none;
         }
 
         .sheet-visible #sheet { transform: translateY(0); }
         .sheet-visible #scrim { visibility: visible; opacity: 1; }
         
         .sheet-handle-container {
-            width: 100%; padding: 12px 0 8px; cursor: grab;
+            width: 100%; padding: 12px 0 16px; cursor: grab;
             display: flex; justify-content: center; flex-shrink: 0;
-            touch-action: none; /* Penting untuk gesture handling manual */
+            touch-action: none;
         }
-        .sheet-handle { width: 32px; height: 4px; background: #E0E0E0; border-radius: 10px; opacity: 0.8; }
+        .sheet-handle { width: 36px; height: 4px; background: #E0E0E0; border-radius: 10px; }
 
         .sheet-header { 
-            padding: 4px 16px 12px;
+            padding: 0px 16px 12px;
             display: flex; align-items: center; gap: 8px; flex-shrink: 0; 
             border-bottom: 1px solid #F0F2F5;
             z-index: 10;
@@ -220,6 +256,7 @@
         #sheet-content-area {
             flex: 1; position: relative; background: #F8F9FF; overflow: hidden;
             display: flex; flex-direction: column;
+            touch-action: auto;
         }
 
         #sheet-content {
@@ -228,7 +265,6 @@
 
         #sheet-content iframe { width: 100%; height: 100%; border: none; display: block; }
 
-        /* --- M3 Circular Progress --- */
         .m3-circular-container {
             position: absolute; inset: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -263,6 +299,7 @@
             border-radius: 14px;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s; flex-shrink: 0;
+            cursor: pointer;
         }
         .header-action-btn:active { transform: scale(0.9); background: #BDD0FF; }
 
@@ -279,84 +316,83 @@
 </head>
 <body id="app-body">
 
-    <header id="main-header">
-        <span class="header-subtitle">OCS NFI APPS 26</span>
-        <div id="h-title" class="header-title">Request</div>
-    </header>
+    <div class="app-shell">
+        <header id="main-header">
+            <span class="header-subtitle">OCS NFI APPS 26</span>
+            <div id="h-title" class="header-title">Request</div>
+        </header>
 
-    <!-- FABs -->
-    <div id="fab-daily" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/18_DNs4WHDtNw0QvqfZ0Uvx9sAgVVZlz9')">
-        <span class="material-symbols-rounded">folder_open</span>
-    </div>
-    <div id="fab-periodik" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y')">
-        <span class="material-symbols-rounded">cloud_sync</span>
-    </div>
+        <!-- M3 Standard FABs -->
+        <div id="fab-daily" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/18_DNs4WHDtNw0QvqfZ0Uvx9sAgVVZlz9')">
+            <span class="material-symbols-rounded">folder_open</span>
+        </div>
+        <div id="fab-periodik" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y')">
+            <span class="material-symbols-rounded">cloud_sync</span>
+        </div>
 
-    <!-- Bottom Sheet -->
-    <div id="scrim" onclick="closeSheet()"></div>
-    <div id="sheet">
-        <div class="sheet-handle-container" id="sheet-handler">
-            <div class="sheet-handle"></div>
-        </div>
-        <div class="sheet-header">
-            <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center rounded-full active:bg-slate-200 transition-colors">
-                <span class="material-symbols-rounded text-slate-600 !text-[24px]">close</span>
-            </button>
-            <h2 id="s-title" class="text-[17px] font-extrabold flex-1 text-left px-2 text-slate-900 tracking-tight overflow-hidden text-ellipsis whitespace-nowrap">Detail</h2>
-            <button id="btn-submit-action" class="header-action-btn hidden">
-                <span id="btn-icon" class="material-symbols-rounded !text-[24px]">send</span>
-            </button>
-        </div>
-        
-        <div id="sheet-content-area">
-            <div id="m3-loader" class="m3-circular-container">
-                <div class="m3-circular-progress">
-                    <svg viewBox="0 0 50 50">
-                        <circle cx="25" cy="25" r="20"></circle>
-                    </svg>
-                </div>
-                <div class="loading-text">Sedang Memuat</div>
+        <div id="scrim" onclick="closeSheet()"></div>
+        <div id="sheet">
+            <div class="sheet-handle-container" id="sheet-handler">
+                <div class="sheet-handle"></div>
             </div>
-            <div id="sheet-content"></div>
+            <div class="sheet-header">
+                <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center rounded-full active:bg-slate-200 transition-colors">
+                    <span class="material-symbols-rounded text-slate-600 !text-[24px]">close</span>
+                </button>
+                <h2 id="s-title" class="text-[17px] font-extrabold flex-1 text-left px-2 text-slate-900 tracking-tight overflow-hidden text-ellipsis whitespace-nowrap">Detail</h2>
+                <button id="btn-submit-action" class="header-action-btn hidden">
+                    <span id="btn-icon" class="material-symbols-rounded !text-[24px]">send</span>
+                </button>
+            </div>
+            
+            <div id="sheet-content-area">
+                <div id="m3-loader" class="m3-circular-container">
+                    <div class="m3-circular-progress">
+                        <svg viewBox="0 0 50 50">
+                            <circle cx="25" cy="25" r="20"></circle>
+                        </svg>
+                    </div>
+                    <div class="loading-text">Sedang Memuat</div>
+                </div>
+                <div id="sheet-content"></div>
+            </div>
         </div>
-    </div>
 
-    <!-- Main Container -->
-    <div id="main-container" class="page-container">
-        <div id="p1" class="page full-page">
-            <iframe id="iframe-daily" class="w-full h-full border-none" src="https://poharaayub.github.io/Daily-activity-for-client/" loading="lazy"></iframe>
+        <div id="main-container" class="page-container">
+            <div id="p1" class="page full-page">
+                <iframe id="iframe-daily" class="w-full h-full border-none" src="https://poharaayub.github.io/Daily-activity-for-client/" loading="lazy"></iframe>
+            </div>
+            <div id="p2" class="page full-page">
+                <iframe id="iframe-periodik" class="w-full h-full border-none" src="about:blank" loading="lazy"></iframe>
+            </div>
+            <div id="p3" class="page active"></div>
+            <div id="p4" class="page"></div>
+            <div id="p5" class="page"></div>
         </div>
-        <div id="p2" class="page full-page">
-            <iframe id="iframe-periodik" class="w-full h-full border-none" src="about:blank" loading="lazy"></iframe>
-        </div>
-        <div id="p3" class="page active"></div>
-        <div id="p4" class="page"></div>
-        <div id="p5" class="page"></div>
-    </div>
 
-    <!-- Navigation -->
-    <nav>
-        <div class="n-btn" onclick="go('p1', 'Harian', this)">
-            <div class="icon-pill"><span class="material-symbols-rounded">event_available</span></div>
-            <span class="n-txt">Harian</span>
-        </div>
-        <div class="n-btn" onclick="go('p2', 'Periodik', this)">
-            <div class="icon-pill"><span class="material-symbols-rounded">history_edu</span></div>
-            <span class="n-txt">Periodik</span>
-        </div>
-        <div id="default-nav-btn" class="n-btn active" onclick="go('p3', 'Request', this)">
-            <div class="icon-pill"><span class="material-symbols-rounded">add_circle</span></div>
-            <span class="n-txt">Request</span>
-        </div>
-        <div class="n-btn" onclick="go('p4', 'Laporan', this)">
-            <div class="icon-pill"><span class="material-symbols-rounded">analytics</span></div>
-            <span class="n-txt">Laporan</span>
-        </div>
-        <div class="n-btn" onclick="go('p5', 'Anggota', this)">
-            <div class="icon-pill"><span class="material-symbols-rounded">groups</span></div>
-            <span class="n-txt">Anggota</span>
-        </div>
-    </nav>
+        <nav>
+            <div class="n-btn" onclick="go('p1', 'Harian', this)">
+                <div class="icon-pill"><span class="material-symbols-rounded">event_available</span></div>
+                <span class="n-txt">Harian</span>
+            </div>
+            <div class="n-btn" onclick="go('p2', 'Periodik', this)">
+                <div class="icon-pill"><span class="material-symbols-rounded">history_edu</span></div>
+                <span class="n-txt">Periodik</span>
+            </div>
+            <div id="default-nav-btn" class="n-btn active" onclick="go('p3', 'Request', this)">
+                <div class="icon-pill"><span class="material-symbols-rounded">add_circle</span></div>
+                <span class="n-txt">Request</span>
+            </div>
+            <div class="n-btn" onclick="go('p4', 'Laporan', this)">
+                <div class="icon-pill"><span class="material-symbols-rounded">analytics</span></div>
+                <span class="n-txt">Laporan</span>
+            </div>
+            <div class="n-btn" onclick="go('p5', 'Anggota', this)">
+                <div class="icon-pill"><span class="material-symbols-rounded">groups</span></div>
+                <span class="n-txt">Anggota</span>
+            </div>
+        </nav>
+    </div>
 
     <script>
         const members = [
@@ -466,9 +502,10 @@
 
         function openSheet(title) {
             const sheet = document.getElementById('sheet');
+            const body = document.getElementById('app-body');
             sheet.style.transform = 'translateY(0)';
             document.getElementById('s-title').innerText = title;
-            document.getElementById('app-body').classList.add('sheet-visible');
+            body.classList.add('sheet-visible');
             sheetIsOpen = true;
             history.pushState({s:1}, "");
         }
@@ -578,7 +615,7 @@
             
             if (appBody.classList.contains('sheet-visible')) {
                 appBody.classList.remove('sheet-visible');
-                sheet.style.transform = ''; // Reset ke nilai CSS asli (translateY 105%)
+                sheet.style.transform = ''; 
                 loader.classList.remove('active');
                 if(sheetIsOpen) history.back(); 
                 sheetIsOpen = false; 
@@ -588,65 +625,43 @@
             }
         }
 
-        // Logic Gesture Bottom Sheet yang lebih responsif
         const sheetElement = document.getElementById('sheet');
         const handler = document.getElementById('sheet-handler');
 
-        handler.addEventListener('touchstart', (e) => {
-            startY = e.touches[0].clientY;
+        function handleDragStart(y) {
+            startY = y;
             isDragging = true;
             sheetElement.style.transition = 'none';
-        }, {passive: true});
+        }
 
-        document.addEventListener('touchmove', (e) => {
+        function handleDragMove(y) {
             if (!isDragging) return;
-            const deltaY = e.touches[0].clientY - startY;
+            const deltaY = y - startY;
             if (deltaY > 0) {
                 currentY = deltaY;
                 sheetElement.style.transform = `translateY(${currentY}px)`;
             }
-        }, {passive: true});
+        }
 
-        document.addEventListener('touchend', () => {
+        function handleDragEnd() {
             if (!isDragging) return;
             isDragging = false;
             sheetElement.style.transition = 'transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)';
-            
-            // Ambang batas tutup sheet (100px)
-            if (currentY > 100) {
-                closeSheet();
-            } else {
-                sheetElement.style.transform = 'translateY(0)';
-            }
-            currentY = 0;
-        });
-
-        // Dukungan Mouse Drag untuk Browser Desktop
-        handler.addEventListener('mousedown', (e) => {
-            startY = e.clientY;
-            isDragging = true;
-            sheetElement.style.transition = 'none';
-            document.body.style.cursor = 'grabbing';
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const deltaY = e.clientY - startY;
-            if (deltaY > 0) {
-                currentY = deltaY;
-                sheetElement.style.transform = `translateY(${currentY}px)`;
-            }
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (!isDragging) return;
-            isDragging = false;
-            document.body.style.cursor = '';
-            sheetElement.style.transition = 'transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)';
-            if (currentY > 100) closeSheet();
+            if (currentY > 120) closeSheet();
             else sheetElement.style.transform = 'translateY(0)';
             currentY = 0;
+            document.body.style.cursor = '';
+        }
+
+        handler.addEventListener('mousedown', (e) => {
+            handleDragStart(e.clientY);
+            document.body.style.cursor = 'grabbing';
         });
+        document.addEventListener('mousemove', (e) => handleDragMove(e.clientY));
+        document.addEventListener('mouseup', handleDragEnd);
+        handler.addEventListener('touchstart', (e) => handleDragStart(e.touches[0].clientY), {passive: true});
+        document.addEventListener('touchmove', (e) => handleDragMove(e.touches[0].clientY), {passive: true});
+        document.addEventListener('touchend', handleDragEnd);
 
         function handleExternalClick(url) { window.open(url, '_blank'); }
         window.onpopstate = () => { if(sheetIsOpen) { closeSheet(); } };
