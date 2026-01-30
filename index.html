@@ -3,200 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#F2F2F7">
+    <meta name="theme-color" content="#F7F9FC">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>OCS NFI Apps 26</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
     
     <style>
         :root {
-            --ios-bg: #F2F2F7;
-            --ios-surface: #FFFFFF; 
-            --ios-primary: #007AFF;
-            --ios-text: #000000;
-            --ios-secondary-text: #8E8E93;
-            --ios-separator: rgba(60, 60, 67, 0.12);
-            --nav-height: 68px;
+            --md-sys-color-primary: #1A3C6E;
+            --md-sys-color-on-primary: #FFFFFF;
+            --md-sys-color-primary-container: #D7E3FF;
+            --md-sys-color-on-primary-container: #001B3E;
+            --md-sys-color-surface: #F7F9FC;
+            --md-sys-color-on-surface: #1C1B1F;
+            --md-sys-color-on-surface-variant: #44474E;
+            --md-sys-color-outline: #74777F;
+            --md-sys-color-secondary-container: #E8DEF8;
+            --md-sys-color-on-secondary-container: #1D192B;
+            --nav-height: 72px;
+            --header-height-expanded: 110px;
+            --header-height-collapsed: 64px;
         }
 
         * { 
             box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent; 
             margin: 0; padding: 0; 
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            letter-spacing: -0.015em;
+            font-family: 'Inter', sans-serif;
         }
 
         body { 
-            background-color: var(--ios-bg); 
+            background-color: var(--md-sys-color-surface); 
             height: 100dvh; width: 100vw; overflow: hidden;
-            color: var(--ios-text);
+            color: var(--md-sys-color-on-surface);
             -webkit-font-smoothing: antialiased;
         }
 
+        /* Update Header untuk efek mengecil */
         header {
-            padding: calc(env(safe-area-inset-top) + 24px) 20px 14px;
-            background: rgba(242, 242, 247, 0.85);
-            backdrop-filter: saturate(180%) blur(25px);
-            -webkit-backdrop-filter: saturate(180%) blur(25px);
+            height: calc(var(--header-height-expanded) + env(safe-area-inset-top));
+            padding: calc(env(safe-area-inset-top) + 8px) 24px 16px;
+            background: var(--md-sys-color-surface);
             position: fixed; top: 0; left: 0; right: 0; z-index: 40;
-            border-bottom: 0.5px solid var(--ios-separator);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+            will-change: height, padding, box-shadow;
         }
         
-        .large-title {
-            font-size: 34px;
-            font-weight: 800;
-            margin-top: 8px;
-            color: #000;
-            transition: transform 0.2s ease, font-size 0.2s ease;
-        }
-
         header.scrolled {
-            padding-top: calc(env(safe-area-inset-top) + 12px);
+            height: calc(var(--header-height-collapsed) + env(safe-area-inset-top));
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             padding-bottom: 12px;
         }
-        header.scrolled .large-title {
-            font-size: 17px;
-            text-align: center;
-            margin-top: 0;
-            transform: translateY(-4px);
-        }
-        header.scrolled .app-badge { opacity: 0; transform: translateY(-10px); }
-
-        .app-badge {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--ios-primary);
+        
+        .header-subtitle {
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--md-sys-color-primary);
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            transition: 0.3s ease;
+            margin-bottom: 2px;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+            transform-origin: left bottom;
+        }
+
+        header.scrolled .header-subtitle {
+            opacity: 0;
+            transform: translateY(10px) scale(0.8);
+            pointer-events: none;
+            margin-bottom: -14px;
+        }
+
+        .header-title {
+            font-size: 26px;
+            font-weight: 600;
+            color: var(--md-sys-color-on-surface);
+            letter-spacing: -0.5px;
+            transition: all 0.4s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        header.scrolled .header-title {
+            font-size: 18px;
+            font-weight: 700;
         }
 
         .page-container { height: 100dvh; width: 100%; position: relative; }
 
         .page { 
             display: none; height: 100%; width: 100%; 
-            overflow-y: auto; -webkit-overflow-scrolling: touch;
-            padding: calc(135px + env(safe-area-inset-top)) 16px calc(var(--nav-height) + env(safe-area-inset-bottom) + 40px);
+            overflow-y: auto; 
+            /* Padding atas menyesuaikan header yang besar */
+            padding: calc(var(--header-height-expanded) + env(safe-area-inset-top) + 16px) 16px calc(var(--nav-height) + env(safe-area-inset-bottom) + 32px);
         }
+        
         .page.full-page { padding: 0 !important; height: 100dvh; z-index: 10; }
-        .page.active { display: block; animation: ios-slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .page.active { display: block; animation: m3-fade-up 0.4s cubic-bezier(0.2, 0, 0, 1); }
 
-        @keyframes ios-slide-up { 
-            from { opacity: 0; transform: translateY(10px); } 
+        @keyframes m3-fade-up { 
+            from { opacity: 0; transform: translateY(12px); } 
             to { opacity: 1; transform: translateY(0); } 
         }
 
         nav {
             position: fixed; 
-            bottom: calc(20px + env(safe-area-inset-bottom)); 
-            left: 20px; 
-            right: 20px;
+            bottom: calc(16px + env(safe-area-inset-bottom)); 
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 480px;
             height: var(--nav-height);
-            background: rgba(255, 255, 255, 0.88); 
-            backdrop-filter: saturate(200%) blur(35px);
-            -webkit-backdrop-filter: saturate(200%) blur(35px);
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             display: flex; 
             z-index: 50; 
-            border-radius: 35px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 0 0 0.5px rgba(0,0,0,0.04);
-            padding: 0 10px;
-            max-width: 550px;
-            margin: 0 auto;
+            padding: 0 8px;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(26, 60, 110, 0.15);
+            border: 1px solid rgba(255,255,255,0.4);
         }
         
         .n-btn { 
             display: flex; flex-direction: column; align-items: center; 
             justify-content: center; flex: 1; 
-            color: var(--ios-secondary-text); 
-            transition: all 0.2s ease;
+            color: var(--md-sys-color-on-surface-variant); 
+            gap: 2px;
+            transition: all 0.2s;
+            position: relative;
         }
-        .n-btn.active { color: var(--ios-primary); }
+        .n-btn:active { transform: scale(0.9); }
         
+        .icon-pill {
+            width: 52px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 20px;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        .n-btn.active .icon-pill { 
+            background: var(--md-sys-color-primary);
+            color: #FFFFFF;
+        }
+
         .n-btn .material-symbols-rounded { 
-            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 20; 
-            font-size: 26px; 
-            margin-bottom: 3px;
+            font-variation-settings: 'FILL' 0, 'wght' 400; 
+            font-size: 24px; 
         }
         .n-btn.active .material-symbols-rounded { 
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; 
+            font-variation-settings: 'FILL' 1, 'wght' 400; 
         }
         
         .n-txt { 
-            font-size: 10px; 
-            font-weight: 600; 
-            letter-spacing: 0.01em;
+            font-size: 10px; font-weight: 500; 
+            letter-spacing: 0.2px;
+            opacity: 0.6;
+            white-space: nowrap;
+        }
+        .n-btn.active .n-txt { 
+            color: var(--md-sys-color-primary); 
+            font-weight: 700; 
+            opacity: 1; 
         }
 
-        .card-list {
-            background: var(--ios-surface);
-            border-radius: 14px;
-            overflow: hidden;
-            margin-bottom: 28px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-        }
+        .card-list { display: flex; flex-direction: column; gap: 12px; }
 
         .card { 
-            background: var(--ios-surface); padding: 12px 16px; 
+            background: #FFFFFF; 
+            padding: 16px; 
             display: flex; align-items: center; width: 100%;
-            transition: background 0.1s;
-            position: relative;
+            border-radius: 24px;
+            transition: all 0.2s;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .card:not(:last-child)::after {
-            content: "";
-            position: absolute; bottom: 0; left: 62px; right: 0;
-            height: 0.5px; background: var(--ios-separator);
-        }
-        .card:active { background: #E5E5EA; }
+        .card:active { background: #F8F9FA; transform: scale(0.97); }
         
         .c-icon { 
-            width: 34px; height: 34px; border-radius: 9px; 
-            color: white; display: flex; align-items: center; 
-            justify-content: center; margin-right: 14px; flex-shrink: 0; 
+            width: 48px; height: 48px; border-radius: 16px; 
+            display: flex; align-items: center; 
+            justify-content: center; margin-right: 16px; flex-shrink: 0; 
+            background: #F1F4F9;
+            color: var(--md-sys-color-primary);
         }
-        .c-icon .material-symbols-rounded { font-size: 20px; }
 
         .fab { 
-            width: 60px; height: 60px; border-radius: 30px; 
+            width: 56px; height: 56px; border-radius: 18px; 
             display: flex; align-items: center; justify-content: center; 
-            position: fixed; bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 38px); 
-            right: 24px; z-index: 60; background: var(--ios-primary); color: white;
-            box-shadow: 0 10px 30px rgba(0,122,255,0.3);
-            transform: scale(0) rotate(-45deg); opacity: 0; 
-            transition: 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: fixed; 
+            bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 36px); 
+            right: 20px; z-index: 60; 
+            background: var(--md-sys-color-primary); 
+            color: white;
+            box-shadow: 0 6px 16px rgba(26, 60, 110, 0.3);
+            transform: scale(0); opacity: 0; 
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .fab.visible { transform: scale(1) rotate(0); opacity: 1; }
+        .fab.visible { transform: scale(1); opacity: 1; }
 
         #scrim { 
             position: fixed; inset: 0; 
             background: rgba(0,0,0,0.4); 
-            z-index: 1000; 
-            display: none; 
-            opacity: 0;
-            transition: opacity 0.4s ease;
+            z-index: 1000; display: none; opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
-        /* BOTTOM SHEET */
         #sheet { 
             position: fixed; 
             bottom: 0; left: 0; right: 0; 
-            background: var(--ios-surface); 
+            background: #FFFFFF; 
             z-index: 1001; 
-            border-radius: 24px 24px 0 0; 
+            border-radius: 32px 32px 0 0; 
             transform: translateY(100%);
-            transition: transform 0.5s cubic-bezier(0.32, 0.72, 0, 1);
-            height: calc(96dvh - env(safe-area-inset-top)); 
-            max-width: 800px; 
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+            transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+            height: calc(90dvh - env(safe-area-inset-top)); 
+            max-width: 600px; margin: 0 auto;
+            display: flex; flex-direction: column; overflow: hidden;
         }
 
         .sheet-visible #sheet { transform: translateY(0); }
@@ -204,97 +232,125 @@
         
         .sheet-handle { 
             width: 36px; height: 5px; 
-            background: rgba(60, 60, 67, 0.15); 
-            border-radius: 100px; 
-            margin: 10px auto;
-            flex-shrink: 0;
+            background: #E0E0E0; 
+            border-radius: 10px; 
+            margin: 12px auto 4px;
         }
 
-        .sheet-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 8px 20px 16px;
-            border-bottom: 0.5px solid var(--ios-separator);
+        .m3-field { margin-bottom: 20px; }
+        .m3-input-box {
+            background: #F0F4F8;
+            border-radius: 16px;
+            padding: 14px 18px;
+            border: 1.5px solid transparent;
+            transition: all 0.3s;
+        }
+        .m3-input-box:focus-within {
+            border-color: var(--md-sys-color-primary);
+            background: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(26, 60, 110, 0.08);
+        }
+        .m3-label { font-size: 11px; color: var(--md-sys-color-primary); font-weight: 700; margin-bottom: 6px; display: block; padding-left: 4px; }
+        .m3-input { 
+            width: 100%; border: none; background: transparent; 
+            font-size: 16px; outline: none;
+            color: var(--md-sys-color-on-surface);
         }
 
-        .sheet-content-scroll {
-            flex: 1; overflow-y: auto; background: var(--ios-bg);
-            -webkit-overflow-scrolling: touch;
+        .header-action-btn {
+            background: var(--md-sys-color-primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
         }
+        .header-action-btn:active { transform: scale(0.94); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
 
-        .ios-field { 
-            background: #FFFFFF; 
-            padding: 14px 16px; 
-            display: flex; 
-            align-items: center; 
+        .m3-loader {
+            width: 48px;
+            height: 48px;
+            display: inline-block;
             position: relative;
         }
-        .ios-field:not(:last-child)::after {
-            content: ""; position: absolute; bottom: 0; left: 16px; right: 0;
-            height: 0.5px; background: var(--ios-separator);
+        .m3-loader svg {
+            animation: m3-rotate 2s linear infinite;
+            height: 100%;
+            width: 100%;
         }
-        .ios-input { flex: 1; border: none; outline: none; font-size: 17px; background: transparent; width: 100%; color: #000; }
-        
-        .section-header {
-            font-size: 13px; text-transform: uppercase; color: var(--ios-secondary-text);
-            margin: 24px 0 10px 18px; font-weight: 600; letter-spacing: 0.04em;
+        .m3-loader circle {
+            stroke: var(--md-sys-color-primary);
+            stroke-dasharray: 1, 200;
+            stroke-dashoffset: 0;
+            stroke-linecap: round;
+            animation: m3-dash 1.5s ease-in-out infinite;
+            stroke-width: 4px;
+            fill: none;
         }
 
-        .spinner {
-            width: 24px; height: 24px;
-            border: 3px solid rgba(0, 122, 255, 0.1);
-            border-top: 3px solid var(--ios-primary);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        @keyframes m3-rotate {
+            100% { transform: rotate(360deg); }
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes m3-dash {
+            0% { stroke-dasharray: 1, 200; stroke-dashoffset: 0; }
+            50% { stroke-dasharray: 89, 200; stroke-dashoffset: -35px; }
+            100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; }
+        }
     </style>
 </head>
 <body id="app-body">
 
     <header id="main-header">
-        <div class="flex justify-between items-center w-full">
-            <span class="app-badge">OCS NFI Apps 26</span>
-        </div>
-        <div id="h-title" class="large-title">Request</div>
+        <span class="header-subtitle">OCS NFI APPS 26</span>
+        <div id="h-title" class="header-title">Request</div>
     </header>
 
     <div id="fab-daily" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/18_DNs4WHDtNw0QvqfZ0Uvx9sAgVVZlz9')">
-        <span class="material-symbols-rounded !text-[28px]">folder_zip</span>
+        <span class="material-symbols-rounded">folder_open</span>
     </div>
 
     <div id="fab-periodik" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y')">
-        <span class="material-symbols-rounded !text-[28px]">cloud_sync</span>
+        <span class="material-symbols-rounded">cloud_sync</span>
     </div>
 
     <div id="scrim" onclick="closeSheet()"></div>
     <div id="sheet">
         <div class="sheet-handle"></div>
-        <div class="sheet-header">
-            <button onclick="closeSheet()" class="text-blue-500 font-medium text-[17px] active:opacity-40 transition-opacity">Batal</button>
-            <h2 id="s-title" class="text-[17px] font-bold text-center truncate flex-1 px-4">Detail</h2>
-            <div class="min-w-[65px] flex justify-end">
-                 <button id="btn-external" class="text-blue-500 hidden active:opacity-40 transition-opacity"><span class="material-symbols-rounded">ios_share</span></button>
-                 <button id="btn-done" onclick="closeSheet()" class="text-blue-500 font-bold hidden active:opacity-40 transition-opacity">Selesai</button>
-            </div>
+        <div class="sheet-header flex items-center p-5">
+            <button onclick="closeSheet()" class="p-2 rounded-full hover:bg-slate-100 transition-colors">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+            <h2 id="s-title" class="text-lg font-bold flex-1 text-left ml-2 truncate text-slate-800">Detail</h2>
+            
+            <button id="btn-submit-action" class="header-action-btn hidden">
+                <span id="btn-icon" class="material-symbols-rounded !text-[20px]">send</span>
+                <span id="btn-text">Kirim</span>
+            </button>
         </div>
         
         <div id="sheet-content-area" class="flex-1 relative overflow-hidden flex flex-col">
-            <div id="loading-ui" class="absolute inset-0 flex items-center justify-center bg-white/90 z-20 hidden">
-                <div class="spinner"></div>
+            <div id="loading-ui" class="absolute inset-0 flex items-center justify-center bg-white/95 z-20 hidden">
+                <div class="m3-loader">
+                    <svg viewBox="25 25 50 50">
+                        <circle cx="50" cy="50" r="20"></circle>
+                    </svg>
+                </div>
             </div>
-            <div id="sheet-content" class="sheet-content-scroll"></div>
+            <div id="sheet-content" class="flex-1 overflow-y-auto p-5 pb-10"></div>
         </div>
     </div>
 
-    <div class="page-container">
+    <div id="main-container" class="page-container">
         <div id="p1" class="page full-page">
             <iframe id="iframe-daily" class="w-full h-full border-none" src="https://poharaayub.github.io/Daily-activity-for-client/" loading="lazy"></iframe>
         </div>
-        
         <div id="p2" class="page full-page">
             <iframe id="iframe-periodik" class="w-full h-full border-none" src="about:blank" loading="lazy"></iframe>
         </div>
-        
         <div id="p3" class="page active"></div>
         <div id="p4" class="page"></div>
         <div id="p5" class="page"></div>
@@ -302,23 +358,23 @@
 
     <nav>
         <div class="n-btn" onclick="go('p1', 'Daily', this)">
-            <span class="material-symbols-rounded">task_alt</span>
+            <div class="icon-pill"><span class="material-symbols-rounded">event_available</span></div>
             <span class="n-txt">Daily</span>
         </div>
         <div class="n-btn" onclick="go('p2', 'Periodik', this)">
-            <span class="material-symbols-rounded">history_edu</span>
+            <div class="icon-pill"><span class="material-symbols-rounded">history_edu</span></div>
             <span class="n-txt">Periodik</span>
         </div>
         <div id="default-nav-btn" class="n-btn active" onclick="go('p3', 'Request', this)">
-            <span class="material-symbols-rounded">add_circle</span>
+            <div class="icon-pill"><span class="material-symbols-rounded">add_circle</span></div>
             <span class="n-txt">Request</span>
         </div>
         <div class="n-btn" onclick="go('p4', 'Laporan', this)">
-            <span class="material-symbols-rounded">analytics</span>
+            <div class="icon-pill"><span class="material-symbols-rounded">analytics</span></div>
             <span class="n-txt">Laporan</span>
         </div>
         <div class="n-btn" onclick="go('p5', 'Member', this)">
-            <span class="material-symbols-rounded">contacts</span>
+            <div class="icon-pill"><span class="material-symbols-rounded">groups</span></div>
             <span class="n-txt">Member</span>
         </div>
     </nav>
@@ -342,20 +398,20 @@
 
         const menuData = {
             p3: [
-                {l:"Request ke Team Leader", i:"chat_bubble", s:"req_tl", c:"bg-[#5856D6]"}, 
-                {l:"Request ke Cleaner", i:"mop", s:"req_cso", c:"bg-[#34C759]"},
-                {l:"Feedback & Komplain", i:"priority_high", s:"feedback_form", c:"bg-[#FF3B30]"}
+                {l:"Request ke Team Leader", i:"chat_bubble", s:"req_tl"}, 
+                {l:"Request ke Cleaner", i:"mop", s:"req_cso"},
+                {l:"Feedback & Komplain", i:"priority_high", s:"feedback_form"}
             ],
             p4: [
-                {l:"Daily Activity", i:"description", url:"https://drive.google.com/drive/folders/1s5BLnmuqGbP3XHq0d30Y1xCUk-tiTejy", ext:true, c:"bg-[#8E8E93]"},
-                {l:"Periodik Cleaning", i:"cleaning_services", url:"https://drive.google.com/drive/folders/1Q7djVthlF5452-4H1NZJVw6Cm3fn7zS8", ext:true, c:"bg-[#8E8E93]"},
-                {l:"Cleaning Filter Air Shower", i:"water_lux", url:"https://docs.google.com/spreadsheets/d/1qLT8OZwqT_LqWT7u5XLUJT2wVpOWFh7i3S56aAB-dNk/edit?usp=drivesdk", ext:false, c:"bg-[#007AFF]"},
-                {l:"Jadwal Shift Member", i:"event_note", url:"https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/", ext:false, c:"bg-[#007AFF]"},
-                {l:"Arsip Big Cleaning", i:"star", url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz", ext:true, c:"bg-[#FFCC00]"},
-                {l:"Laporan Cuci Box", i:"inventory", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit", c:"bg-[#34C759]"},
-                {l:"Laporan Cuci Pallet", i:"grid_view", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit", c:"bg-[#34C759]"},
-                {l:"Pallet Warehouse Tepung", i:"warehouse", url:"https://docs.google.com/spreadsheets/d/1C9Zrywvi_ggnHnKHB9fxUU9f-DCWaGNFJflKqbHVEnI/edit", ext:false, c:"bg-[#5856D6]"},
-                {l:"Tentang aplikasi", i:"info", s:"about_apps", c:"bg-[#1C1C1E]"}
+                {l:"Daily Activity", i:"description", url:"https://drive.google.com/drive/folders/1s5BLnmuqGbP3XHq0d30Y1xCUk-tiTejy", ext:true},
+                {l:"Periodik Cleaning", i:"cleaning_services", url:"https://drive.google.com/drive/folders/1Q7djVthlF5452-4H1NZJVw6Cm3fn7zS8", ext:true},
+                {l:"Filter Air Shower", i:"water_lux", url:"https://docs.google.com/spreadsheets/d/1qLT8OZwqT_LqWT7u5XLUJT2wVpOWFh7i3S56aAB-dNk/edit?usp=drivesdk", ext:false},
+                {l:"Jadwal Shift", i:"event_note", url:"https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/", ext:false},
+                {l:"Arsip Big Cleaning", i:"stars", url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz", ext:true},
+                {l:"Laporan Cuci Box", i:"inventory", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit"},
+                {l:"Laporan Cuci Pallet", i:"grid_view", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit"},
+                {l:"Pallet WH Tepung", i:"warehouse", url:"https://docs.google.com/spreadsheets/d/1C9Zrywvi_ggnHnKHB9fxUU9f-DCWaGNFJflKqbHVEnI/edit", ext:false},
+                {l:"Info Aplikasi", i:"info", s:"about_apps"}
             ]
         };
 
@@ -373,7 +429,7 @@
             const fabDaily = document.getElementById('fab-daily');
             const fabPeriodik = document.getElementById('fab-periodik');
             
-            header.style.display = (id === 'p1' || id === 'p2') ? 'none' : 'block';
+            header.style.display = (id === 'p1' || id === 'p2') ? 'none' : 'flex';
             fabDaily.classList.toggle('visible', id === 'p1');
             fabPeriodik.classList.toggle('visible', id === 'p2');
             
@@ -387,10 +443,12 @@
             header.classList.remove('scrolled');
         }
 
+        // Listener untuk scroll pada setiap halaman
         document.querySelectorAll('.page').forEach(page => {
             page.addEventListener('scroll', (e) => {
                 const header = document.getElementById('main-header');
-                if (e.target.scrollTop > 20) {
+                // Header mengecil setelah scroll melewati 30px
+                if (e.target.scrollTop > 30) {
                     header.classList.add('scrolled');
                 } else {
                     header.classList.remove('scrolled');
@@ -400,36 +458,36 @@
 
         function renderPage(id) {
             const container = document.getElementById(id);
-            if(!container || id === 'p2' || id === 'p1') return;
+            if(!container || id === 'p1' || id === 'p2') return;
             container.innerHTML = '';
             
             if(id === 'p5') {
                 const wrap = document.createElement('div');
                 wrap.innerHTML = `<div class="card-list">` + 
-                    members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, "bg-[#8E8E93]")).join('') + `</div>`;
+                    members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d)).join('') + `</div>`;
                 container.appendChild(wrap);
             } else if(menuData[id]) {
                 const listWrap = document.createElement('div');
                 listWrap.innerHTML = `<div class="card-list">` + 
                     menuData[id].map(item => {
                         let act = item.s ? `openMenuSheet('${item.s}')` : (item.ext ? `handleExternalClick('${item.url}')` : `openInSheet('${item.l}','${item.url}')`);
-                        return createCard(item.l, item.i, act, "", item.c);
+                        return createCard(item.l, item.i, act, "");
                     }).join('') + `</div>`;
                 container.appendChild(listWrap);
             }
         }
 
-        function createCard(t, i, a, d="", color="bg-blue-500") {
+        function createCard(t, i, a, d="") {
             return `
             <button class="card" onclick="${a}">
-                <div class="c-icon ${color}">
-                    <span class="material-symbols-rounded !text-[20px]">${i}</span>
+                <div class="c-icon">
+                    <span class="material-symbols-rounded">${i}</span>
                 </div>
                 <div class="flex-1 text-left overflow-hidden">
-                    <div class="font-normal text-[17px] text-slate-900 truncate">${t}</div>
-                    ${d ? `<div class="text-[13px] text-slate-400 mt-0.5 truncate">${d}</div>` : ''}
+                    <div class="font-semibold text-[15px] text-slate-800 truncate">${t}</div>
+                    ${d ? `<div class="text-[12px] text-slate-500 mt-0.5 truncate">${d}</div>` : ''}
                 </div>
-                <span class="material-symbols-rounded text-slate-300 !text-[20px] ml-2">chevron_right</span>
+                <span class="material-symbols-rounded text-slate-300 !text-[18px] ml-2">chevron_right</span>
             </button>`;
         }
 
@@ -443,13 +501,15 @@
         function openInSheet(title, url) {
             const container = document.getElementById('sheet-content');
             const loader = document.getElementById('loading-ui');
-            const btnExt = document.getElementById('btn-external');
-            const btnDone = document.getElementById('btn-done');
+            const submitBtn = document.getElementById('btn-submit-action');
+            const btnIcon = document.getElementById('btn-icon');
+            const btnText = document.getElementById('btn-text');
             
-            btnExt.onclick = () => window.open(url, '_blank');
-            btnExt.classList.remove('hidden');
-            btnDone.classList.add('hidden');
-            
+            submitBtn.classList.remove('hidden');
+            btnIcon.innerText = "open_in_new";
+            btnText.innerText = "Buka Full";
+            submitBtn.onclick = () => handleExternalClick(url);
+
             container.innerHTML = ''; 
             loader.classList.remove('hidden');
 
@@ -461,73 +521,104 @@
                 loader.classList.add('hidden'); 
                 f.classList.remove('opacity-0'); 
             };
+            container.style.padding = "0";
             container.appendChild(f);
             openSheet(title);
         }
 
         function openMenuSheet(type) {
             const content = document.getElementById('sheet-content');
-            const btnExt = document.getElementById('btn-external');
-            const btnDone = document.getElementById('btn-done');
+            const submitBtn = document.getElementById('btn-submit-action');
+            const btnIcon = document.getElementById('btn-icon');
+            const btnText = document.getElementById('btn-text');
+            content.style.padding = "20px";
             
-            btnExt.classList.add('hidden');
-            btnDone.classList.add('hidden');
-            
-            let html = '<div class="pb-24">';
+            let html = '<div class="space-y-4">';
             let title = "";
 
             if (type === 'about_apps') {
-                title = "Tentang aplikasi";
+                title = "Info Aplikasi";
+                submitBtn.classList.add('hidden');
                 html += `
-                <div class="flex flex-col items-center py-12 px-6">
-                    <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-[24%] flex items-center justify-center mb-6 shadow-lg">
-                         <span class="material-symbols-rounded text-white !text-5xl">verified</span>
+                <div class="flex flex-col items-center py-4 text-center">
+                    <div class="w-20 h-20 bg-[#1A3C6E] rounded-[28px] flex items-center justify-center mb-6 shadow-xl shadow-[#1A3C6E]/20">
+                         <span class="material-symbols-rounded text-white !text-4xl">verified</span>
                     </div>
-                    <h3 class="text-2xl font-bold tracking-tight">OCS NFI Apps 26</h3>
-                    <p class="text-slate-500 text-sm mb-8">Version 1.3.0 • Portal Client</p>
+                    <h3 class="text-2xl font-bold text-slate-800 tracking-tight">OCS NFI Portal</h3>
+                    <p class="text-slate-500 text-sm mb-8">Edisi Pembersihan & Perawatan</p>
                     
-                    <div class="card-list w-full">
-                        <div class="card flex justify-between">
-                            <span class="text-slate-500">Pengembang</span>
-                            <span class="font-semibold">Pohara Ayub</span>
+                    <div class="w-full text-left space-y-4">
+                        <div class="bg-slate-50 p-5 rounded-3xl border border-slate-100">
+                            <h4 class="text-xs font-extrabold text-[#1A3C6E] uppercase tracking-wider mb-2">Deskripsi</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Aplikasi portal manajemen kebersihan khusus untuk area NFI. Dirancang dengan prinsip <span class="text-[#1A3C6E] font-semibold">Material Design 3</span> untuk memberikan pengalaman navigasi yang intuitif dan responsif bagi klien dan tim operasional.
+                            </p>
                         </div>
-                        <div class="card flex justify-between">
-                            <span class="text-slate-500">Layanan</span>
-                            <span class="font-semibold">Proyek NFI</span>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-[#D7E3FF] p-4 rounded-3xl border border-[#1A3C6E]/5">
+                                <p class="text-[10px] font-bold text-[#001B3E] uppercase opacity-60 mb-1">Versi</p>
+                                <p class="text-sm font-bold text-[#001B3E]">1.8.0 Stable</p>
+                            </div>
+                            <div class="bg-[#E8DEF8] p-4 rounded-3xl border border-purple-100">
+                                <p class="text-[10px] font-bold text-[#1D192B] uppercase opacity-60 mb-1">Status</p>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                                    <p class="text-sm font-bold text-[#1D192B]">Operasional</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-3xl border border-slate-200 flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
+                                <span class="material-symbols-rounded text-slate-600">code</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Developer</p>
+                                <p class="text-sm font-bold text-slate-800">Pohara Ayub</p>
+                            </div>
                         </div>
                     </div>
+
+                    <p class="mt-10 text-[11px] text-slate-400 font-medium">© 2026 OCS Indonesia • NFI Branch 26</p>
                 </div>`;
             } else if (type === 'feedback_form') {
-                title = "Feedback Client";
-                btnDone.classList.remove('hidden');
-                btnDone.onclick = submitFeedback;
+                title = "Feedback Klien";
+                submitBtn.classList.remove('hidden'); 
+                btnIcon.innerText = "send";
+                btnText.innerText = "Kirim";
+                submitBtn.onclick = submitFeedback;
 
                 html += `
-                <div class="px-4">
-                    <div class="section-header">LOKASI & AREA</div>
-                    <div class="card-list">
-                        <div class="ios-field"><input type="text" id="f-name" class="ios-input" placeholder="Nama Area Kerja"></div>
-                        <div class="ios-field">
-                            <select id="f-category" class="ios-input appearance-none">
-                                <option>Kebersihan Area</option>
-                                <option>Kinerja Cleaner</option>
-                                <option>Ketersediaan Barang</option>
-                                <option>Saran / Masukan</option>
-                            </select>
-                        </div>
+                <div class="m3-field">
+                    <label class="m3-label">LOKASI AREA</label>
+                    <div class="m3-input-box">
+                        <input type="text" id="f-name" class="m3-input" placeholder="Contoh: Office Lt. 1">
                     </div>
-                    <div class="section-header">PESAN DETAIL</div>
-                    <div class="card-list">
-                        <div class="ios-field" style="padding:0">
-                            <textarea id="f-message" class="ios-input p-4 min-h-[200px]" placeholder="Apa yang ingin Anda sampaikan?"></textarea>
-                        </div>
+                </div>
+                <div class="m3-field">
+                    <label class="m3-label">KATEGORI</label>
+                    <div class="m3-input-box">
+                        <select id="f-category" class="m3-input appearance-none">
+                            <option>Kebersihan Area</option>
+                            <option>Kinerja Cleaner</option>
+                            <option>Ketersediaan Barang</option>
+                            <option>Saran / Masukan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="m3-field">
+                    <label class="m3-label">PESAN DETAIL</label>
+                    <div class="m3-input-box">
+                        <textarea id="f-message" class="m3-input min-h-[150px]" placeholder="Berikan detail masukan atau keluhan Anda secara lengkap..."></textarea>
                     </div>
                 </div>`;
             } else {
                 title = type==='req_tl'?"Team Leader":"Pilih Cleaner";
+                submitBtn.classList.add('hidden');
                 const list = type==='req_tl' ? members.filter(m=>m.d.includes("Leader")||m.d.includes("Manager")) : members.filter(m=>!m.d.includes("Leader")&&!m.d.includes("Manager"));
-                html += `<div class="px-4 mt-6"><div class="card-list">` + 
-                    list.map(m => createCard(m.n, "chat_bubble", `chat('${m.p}','Halo ${m.n}, mohon bantuan di area...')`, m.d, "bg-blue-500")).join('') + `</div></div>`;
+                html += `<div class="card-list">` + 
+                    list.map(m => createCard(m.n, "chat", `chat('${m.p}','Halo ${m.n}, mohon bantuan di area...')`, m.d)).join('') + `</div>`;
             }
             html += '</div>';
             content.innerHTML = html;
@@ -539,7 +630,7 @@
             const category = document.getElementById('f-category').value;
             const message = document.getElementById('f-message').value;
             if(!name || !message) return;
-            const waText = `*OCS CLIENT FEEDBACK*%0A%0A📍 *Lokasi:* ${name}%0A🎫 *Kategori:* ${category}%0A%0A📝 *Pesan:*%0A${message}`;
+            const waText = `*OCS CLIENT FEEDBACK*%0A%0A📍 *Lokasi:* ${name}%0A📂 *Kategori:* ${category}%0A%0A💬 *Pesan:*%0A${message}`;
             window.open(`https://wa.me/6289637126728?text=${waText}`, '_blank');
             closeSheet();
         }
