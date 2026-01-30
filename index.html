@@ -45,6 +45,7 @@
             height: 100dvh; width: 100vw; overflow: hidden;
             color: var(--md-sys-color-on-surface);
             -webkit-font-smoothing: antialiased;
+            position: fixed; 
         }
 
         /* --- Header Styles --- */
@@ -88,6 +89,7 @@
         .page { 
             display: none; height: 100%; width: 100%; 
             overflow-y: auto; 
+            -webkit-overflow-scrolling: touch;
             padding: calc(var(--header-height-expanded) + env(safe-area-inset-top) + 12px) 20px calc(var(--nav-height) + env(safe-area-inset-bottom) + 20px);
         }
         
@@ -109,7 +111,6 @@
             background: var(--md-sys-color-surface-container); 
             display: flex; justify-content: center; align-items: center; 
             z-index: 50; padding-bottom: env(safe-area-inset-bottom);
-            border-top: none;
         }
         
         .n-btn { 
@@ -137,7 +138,7 @@
         .n-btn.active .n-txt { color: var(--md-sys-color-primary); font-weight: 700; }
 
         /* --- Cards --- */
-        .card-list { display: flex; flex-direction: column; gap: 4px; }
+        .card-list { display: flex; flex-direction: column; gap: 8px; }
         .card { 
             background: #FFFFFF; padding: 18px 24px; 
             display: flex; align-items: center; width: 100%;
@@ -169,63 +170,80 @@
         }
         .fab.visible { transform: scale(1); opacity: 1; }
 
-        /* --- M3 Bottom Sheet & Loading --- */
+        /* --- M3 Bottom Sheet Responsivitas --- */
         #scrim { 
-            position: fixed; inset: 0; background: rgba(0, 10, 30, 0.5); 
+            position: fixed; inset: 0; background: rgba(0, 10, 30, 0.4); 
             z-index: 1000; visibility: hidden; opacity: 0;
             transition: opacity 0.3s ease, visibility 0.3s;
+            backdrop-filter: blur(2px);
         }
         
         #sheet { 
             position: fixed; bottom: 0; left: 0; right: 0; 
-            background: #FFFFFF; z-index: 1001; border-radius: 28px 28px 0 0; 
+            background: #FFFFFF; z-index: 1001; 
+            border-radius: 28px 28px 0 0; 
             transform: translateY(105%);
-            transition: transform 0.35s cubic-bezier(0.1, 0.9, 0.2, 1);
-            /* Diperbarui menjadi 95% dari tinggi viewport */
-            height: 95dvh; 
-            max-width: 640px; margin: 0 auto;
-            display: flex; flex-direction: column; overflow: hidden;
-            box-shadow: 0 -8px 32px rgba(0, 20, 50, 0.2);
+            transition: transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
+            height: 90dvh;
+            height: 90svh; /* Menggunakan svh untuk dukungan mobile yang lebih baik */
+            width: 100%;
+            max-width: 640px; 
+            margin: 0 auto;
+            display: flex; flex-direction: column;
+            box-shadow: 0 -8px 32px rgba(0, 20, 50, 0.15);
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        /* Responsivitas Desktop: Menyesuaikan radius jika tidak full-width */
+        @media (min-width: 641px) {
+            #sheet { border-radius: 28px 28px 0 0; }
         }
 
         .sheet-visible #sheet { transform: translateY(0); }
         .sheet-visible #scrim { visibility: visible; opacity: 1; }
         
-        .sheet-handle { width: 32px; height: 4px; background: #E0E0E0; border-radius: 10px; margin: 10px auto 4px; flex-shrink: 0; }
+        .sheet-handle-container {
+            width: 100%; padding: 12px 0 8px; cursor: grab;
+            display: flex; justify-content: center; flex-shrink: 0;
+            touch-action: none; /* Penting untuk gesture handling manual */
+        }
+        .sheet-handle { width: 32px; height: 4px; background: #E0E0E0; border-radius: 10px; opacity: 0.8; }
 
         .sheet-header { 
-            padding: 4px 12px 10px;
-            display: flex; align-items: center; gap: 4px; flex-shrink: 0; 
+            padding: 4px 16px 12px;
+            display: flex; align-items: center; gap: 8px; flex-shrink: 0; 
             border-bottom: 1px solid #F0F2F5;
-            position: relative;
+            z-index: 10;
         }
 
-        /* --- Material Design 3 Circular Progress --- */
+        #sheet-content-area {
+            flex: 1; position: relative; background: #F8F9FF; overflow: hidden;
+            display: flex; flex-direction: column;
+        }
+
+        #sheet-content {
+            flex: 1; width: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch;
+        }
+
+        #sheet-content iframe { width: 100%; height: 100%; border: none; display: block; }
+
+        /* --- M3 Circular Progress --- */
         .m3-circular-container {
             position: absolute; inset: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(2px);
+            background: rgba(255, 255, 255, 0.9);
             z-index: 50; visibility: hidden; opacity: 0;
-            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.3s;
         }
         .m3-circular-container.active { visibility: visible; opacity: 1; }
 
-        .m3-circular-progress {
-            width: 48px; height: 48px;
-            position: relative;
-            animation: m3-rotate 2s linear infinite;
-        }
-
+        .m3-circular-progress { width: 48px; height: 48px; animation: m3-rotate 2s linear infinite; }
         .m3-circular-progress svg { width: 100%; height: 100%; }
-
         .m3-circular-progress circle {
-            fill: none;
-            stroke: var(--md-sys-color-primary);
-            stroke-width: 4;
-            stroke-linecap: round;
-            stroke-dasharray: 1, 200;
-            stroke-dashoffset: 0;
+            fill: none; stroke: var(--md-sys-color-primary);
+            stroke-width: 4; stroke-linecap: round;
+            stroke-dasharray: 1, 200; stroke-dashoffset: 0;
             animation: m3-dash 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
@@ -236,31 +254,26 @@
             100% { stroke-dasharray: 89, 200; stroke-dashoffset: -124px; }
         }
 
-        .loading-text {
-            margin-top: 16px;
-            font-size: 11px; font-weight: 700;
-            color: var(--md-sys-color-primary);
-            letter-spacing: 1.5px; text-transform: uppercase;
-        }
+        .loading-text { margin-top: 16px; font-size: 11px; font-weight: 700; color: var(--md-sys-color-primary); letter-spacing: 1.5px; text-transform: uppercase; }
 
         .header-action-btn {
-            width: 40px; height: 40px;
+            width: 44px; height: 44px;
             background: var(--md-sys-color-primary-container); 
             color: var(--md-sys-color-on-primary-container);
-            border-radius: 12px;
+            border-radius: 14px;
             display: flex; align-items: center; justify-content: center;
             transition: all 0.2s; flex-shrink: 0;
         }
-        .header-action-btn:active { transform: scale(0.9); background: var(--md-sys-color-primary); color: white; }
+        .header-action-btn:active { transform: scale(0.9); background: #BDD0FF; }
 
         .m3-field { padding: 0 20px 16px; }
         .m3-input-box {
             background: var(--md-sys-color-surface-container);
-            border-radius: 12px; padding: 14px 16px;
+            border-radius: 16px; padding: 14px 16px;
             border: 2px solid transparent; transition: all 0.2s;
         }
-        .m3-input-box:focus-within { border-color: var(--md-sys-color-primary); background: #FFFFFF; }
-        .m3-label { font-size: 10px; color: var(--md-sys-color-primary); font-weight: 800; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.8px;}
+        .m3-input-box:focus-within { border-color: var(--md-sys-color-primary); background: #FFFFFF; box-shadow: 0 4px 12px rgba(0, 51, 102, 0.05); }
+        .m3-label { font-size: 11px; color: var(--md-sys-color-primary); font-weight: 800; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; margin-left: 4px; }
         .m3-input { width: 100%; border: none; background: transparent; font-size: 15px; outline: none; font-weight: 500; color: var(--md-sys-color-on-surface); }
     </style>
 </head>
@@ -282,19 +295,20 @@
     <!-- Bottom Sheet -->
     <div id="scrim" onclick="closeSheet()"></div>
     <div id="sheet">
-        <div class="sheet-handle"></div>
+        <div class="sheet-handle-container" id="sheet-handler">
+            <div class="sheet-handle"></div>
+        </div>
         <div class="sheet-header">
-            <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 transition-colors">
-                <span class="material-symbols-rounded text-slate-600 !text-[22px]">close</span>
+            <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center rounded-full active:bg-slate-200 transition-colors">
+                <span class="material-symbols-rounded text-slate-600 !text-[24px]">close</span>
             </button>
-            <h2 id="s-title" class="text-[16px] font-extrabold flex-1 text-left px-2 text-slate-900 tracking-tight overflow-hidden text-ellipsis whitespace-nowrap">Detail</h2>
-            
+            <h2 id="s-title" class="text-[17px] font-extrabold flex-1 text-left px-2 text-slate-900 tracking-tight overflow-hidden text-ellipsis whitespace-nowrap">Detail</h2>
             <button id="btn-submit-action" class="header-action-btn hidden">
-                <span id="btn-icon" class="material-symbols-rounded !text-[22px]">send</span>
+                <span id="btn-icon" class="material-symbols-rounded !text-[24px]">send</span>
             </button>
         </div>
         
-        <div id="sheet-content-area" class="flex-1 relative overflow-hidden bg-[#F8F9FF]">
+        <div id="sheet-content-area">
             <div id="m3-loader" class="m3-circular-container">
                 <div class="m3-circular-progress">
                     <svg viewBox="0 0 50 50">
@@ -303,7 +317,7 @@
                 </div>
                 <div class="loading-text">Sedang Memuat</div>
             </div>
-            <div id="sheet-content" class="h-full overflow-y-auto scrolling-touch"></div>
+            <div id="sheet-content"></div>
         </div>
     </div>
 
@@ -381,6 +395,9 @@
         };
 
         let sheetIsOpen = false;
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
 
         function go(id, title, el) {
             document.querySelectorAll('.n-btn').forEach(b => b.classList.remove('active'));
@@ -422,7 +439,7 @@
             
             container.innerHTML = '';
             const wrap = document.createElement('div');
-            wrap.className = "card-list";
+            wrap.className = "card-list px-1 py-2";
             
             if(id === 'p5') {
                 wrap.innerHTML = members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, true)).join('');
@@ -448,6 +465,8 @@
         }
 
         function openSheet(title) {
+            const sheet = document.getElementById('sheet');
+            sheet.style.transform = 'translateY(0)';
             document.getElementById('s-title').innerText = title;
             document.getElementById('app-body').classList.add('sheet-visible');
             sheetIsOpen = true;
@@ -467,12 +486,12 @@
             container.innerHTML = ''; 
             const pUrl = url.includes('spreadsheets') ? url.replace(/\/edit.*$/, '/preview') : url;
             const f = document.createElement('iframe');
-            f.className = "w-full h-full border-none opacity-0";
             f.src = pUrl;
+            f.style.opacity = '0';
             f.onload = () => { 
                 loader.classList.remove('active'); 
-                f.style.transition = "opacity 0.4s cubic-bezier(0.2, 0, 0, 1)";
-                f.classList.remove('opacity-0'); 
+                f.style.transition = "opacity 0.4s ease";
+                f.style.opacity = '1';
             };
             container.appendChild(f);
             openSheet(title);
@@ -490,11 +509,14 @@
                 title = "Info Aplikasi";
                 submitBtn.classList.add('hidden');
                 html += `<div class="flex flex-col items-center py-10 px-6 text-center">
-                    <div class="w-20 h-20 bg-blue-50 rounded-[24px] flex items-center justify-center mb-6 border border-blue-100">
+                    <div class="w-20 h-20 bg-blue-50 rounded-[24px] flex items-center justify-center mb-6 border border-blue-100 shadow-sm">
                          <span class="material-symbols-rounded text-[#003366] !text-4xl">shield_person</span>
                     </div>
                     <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Pohara Ayub</h3>
                     <p class="text-slate-500 font-bold text-[10px] mt-1 uppercase tracking-widest">Sistem Pengembang OCS NFI</p>
+                    <div class="mt-8 pt-8 border-t border-slate-100 w-full text-slate-400 text-[10px] font-medium tracking-wide uppercase">
+                        Version 26.1.0 (Stable)
+                    </div>
                 </div>`;
             } else if (type === 'feedback_form') {
                 title = "Feedback Klien";
@@ -551,9 +573,12 @@
 
         function closeSheet() { 
             const appBody = document.getElementById('app-body');
+            const sheet = document.getElementById('sheet');
             const loader = document.getElementById('m3-loader');
+            
             if (appBody.classList.contains('sheet-visible')) {
                 appBody.classList.remove('sheet-visible');
+                sheet.style.transform = ''; // Reset ke nilai CSS asli (translateY 105%)
                 loader.classList.remove('active');
                 if(sheetIsOpen) history.back(); 
                 sheetIsOpen = false; 
@@ -562,6 +587,66 @@
                 }, 400);
             }
         }
+
+        // Logic Gesture Bottom Sheet yang lebih responsif
+        const sheetElement = document.getElementById('sheet');
+        const handler = document.getElementById('sheet-handler');
+
+        handler.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            isDragging = true;
+            sheetElement.style.transition = 'none';
+        }, {passive: true});
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            const deltaY = e.touches[0].clientY - startY;
+            if (deltaY > 0) {
+                currentY = deltaY;
+                sheetElement.style.transform = `translateY(${currentY}px)`;
+            }
+        }, {passive: true});
+
+        document.addEventListener('touchend', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            sheetElement.style.transition = 'transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)';
+            
+            // Ambang batas tutup sheet (100px)
+            if (currentY > 100) {
+                closeSheet();
+            } else {
+                sheetElement.style.transform = 'translateY(0)';
+            }
+            currentY = 0;
+        });
+
+        // Dukungan Mouse Drag untuk Browser Desktop
+        handler.addEventListener('mousedown', (e) => {
+            startY = e.clientY;
+            isDragging = true;
+            sheetElement.style.transition = 'none';
+            document.body.style.cursor = 'grabbing';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const deltaY = e.clientY - startY;
+            if (deltaY > 0) {
+                currentY = deltaY;
+                sheetElement.style.transform = `translateY(${currentY}px)`;
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!isDragging) return;
+            isDragging = false;
+            document.body.style.cursor = '';
+            sheetElement.style.transition = 'transform 0.4s cubic-bezier(0.1, 0.9, 0.2, 1)';
+            if (currentY > 100) closeSheet();
+            else sheetElement.style.transform = 'translateY(0)';
+            currentY = 0;
+        });
 
         function handleExternalClick(url) { window.open(url, '_blank'); }
         window.onpopstate = () => { if(sheetIsOpen) { closeSheet(); } };
