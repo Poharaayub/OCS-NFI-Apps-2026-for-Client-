@@ -349,12 +349,13 @@
             p4: [
                 {l:"Daily Activity", i:"description", url:"https://drive.google.com/drive/folders/1s5BLnmuqGbP3XHq0d30Y1xCUk-tiTejy", ext:true, c:"bg-[#8E8E93]"},
                 {l:"Periodik Cleaning", i:"cleaning_services", url:"https://drive.google.com/drive/folders/1Q7djVthlF5452-4H1NZJVw6Cm3fn7zS8", ext:true, c:"bg-[#8E8E93]"},
+                {l:"Cleaning Filter Air Shower", i:"water_lux", url:"https://docs.google.com/spreadsheets/d/1qLT8OZwqT_LqWT7u5XLUJT2wVpOWFh7i3S56aAB-dNk/edit?usp=drivesdk", ext:false, c:"bg-[#007AFF]"},
                 {l:"Jadwal Shift Member", i:"event_note", url:"https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/", ext:false, c:"bg-[#007AFF]"},
                 {l:"Arsip Big Cleaning", i:"star", url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz", ext:true, c:"bg-[#FFCC00]"},
                 {l:"Laporan Cuci Box", i:"inventory", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit", c:"bg-[#34C759]"},
                 {l:"Laporan Cuci Pallet", i:"grid_view", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit", c:"bg-[#34C759]"},
                 {l:"Pallet Warehouse Tepung", i:"warehouse", url:"https://docs.google.com/spreadsheets/d/1C9Zrywvi_ggnHnKHB9fxUU9f-DCWaGNFJflKqbHVEnI/edit", ext:false, c:"bg-[#5856D6]"},
-                {l:"Tentang aplikasi", i:"info", s:"about_apps", c:"bg-[#1C1C1E]"} // Perubahan label di sini
+                {l:"Tentang aplikasi", i:"info", s:"about_apps", c:"bg-[#1C1C1E]"}
             ]
         };
 
@@ -476,7 +477,7 @@
             let title = "";
 
             if (type === 'about_apps') {
-                title = "Tentang aplikasi"; // Perubahan judul sheet di sini
+                title = "Tentang aplikasi";
                 html += `
                 <div class="flex flex-col items-center py-12 px-6">
                     <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-[24%] flex items-center justify-center mb-6 shadow-lg">
@@ -538,7 +539,7 @@
             const category = document.getElementById('f-category').value;
             const message = document.getElementById('f-message').value;
             if(!name || !message) return;
-            const waText = `*OCS CLIENT FEEDBACK*%0A%0A📍 *Lokasi:* ${name}%0A📂 *Kategori:* ${category}%0A%0A💬 *Pesan:*%0A${message}`;
+            const waText = `*OCS CLIENT FEEDBACK*%0A%0A📍 *Lokasi:* ${name}%0A🎫 *Kategori:* ${category}%0A%0A📝 *Pesan:*%0A${message}`;
             window.open(`https://wa.me/6289637126728?text=${waText}`, '_blank');
             closeSheet();
         }
