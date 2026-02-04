@@ -26,7 +26,7 @@
             --md-sys-color-on-surface-variant: #43474E;
             --md-sys-color-outline-variant: #C3C7CF;
             
-            --nav-height: 84px;
+            --nav-height: 80px;
             --header-height-expanded: 120px;
             --header-height-collapsed: 64px;
             --max-app-width: 768px; 
@@ -114,38 +114,58 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
+        /* Navigasi Bawah Ter-optimasi */
         nav {
             position: absolute; bottom: 0; left: 0; right: 0;
             height: calc(var(--nav-height) + env(safe-area-inset-bottom));
-            background: var(--md-sys-color-surface-container); 
-            display: flex; justify-content: center; align-items: center; 
-            z-index: 50; padding-bottom: env(safe-area-inset-bottom);
-            box-shadow: 0 -1px 0 rgba(0,0,0,0.03);
+            background: #FFFFFF; 
+            display: flex; justify-content: space-around; align-items: flex-start; 
+            z-index: 50; padding: 12px 8px env(safe-area-inset-bottom);
+            box-shadow: 0 -4px 16px rgba(0,0,0,0.04);
+            border-top: 1px solid rgba(0, 97, 164, 0.05);
         }
         
         .n-btn { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            height: 100%; flex: 1; color: var(--md-sys-color-on-surface-variant); 
+            flex: 1; color: var(--md-sys-color-on-surface-variant); 
             gap: 4px; transition: all 0.2s; cursor: pointer;
+            position: relative;
         }
         
         .icon-pill {
-            width: 64px; height: 32px;
+            width: 56px; height: 32px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 100px;
             transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            background: transparent;
         }
 
         .n-btn.active .icon-pill { 
             background: var(--md-sys-color-primary-container);
             color: var(--md-sys-color-on-primary-container);
+            transform: scale(1.1);
         }
 
-        .n-btn .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400; font-size: 24px; }
-        .n-btn.active .material-symbols-rounded { font-variation-settings: 'FILL' 1, 'wght' 600; }
+        .n-btn .material-symbols-rounded { 
+            font-variation-settings: 'FILL' 0, 'wght' 400; 
+            font-size: 24px; 
+            transition: transform 0.2s ease;
+        }
         
-        .n-txt { font-size: 11px; font-weight: 500; letter-spacing: 0.1px; }
-        .n-btn.active .n-txt { color: var(--md-sys-color-primary); font-weight: 700; }
+        .n-btn.active .material-symbols-rounded { 
+            font-variation-settings: 'FILL' 1, 'wght' 500; 
+        }
+        
+        .n-txt { 
+            font-size: 11px; font-weight: 500; letter-spacing: 0.2px; 
+            transition: all 0.3s ease;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+        
+        .n-btn.active .n-txt { 
+            color: var(--md-sys-color-primary); 
+            font-weight: 700;
+        }
 
         .card-list { 
             display: grid; 
@@ -333,7 +353,7 @@
             <div id="p5" class="page"></div>
         </div>
 
-        <!-- Bottom Navigation -->
+        <!-- Optimized Bottom Navigation -->
         <nav>
             <div class="n-btn" onclick="go('p1', 'Harian', this)">
                 <div class="icon-pill"><span class="material-symbols-rounded">event_available</span></div>
