@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="theme-color" content="#F8F9FF">
+    <meta name="theme-color" content="#0061A4">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>OCS NFI Apps 26</title>
+    <title>OCS NFI Apps 26 - Ocean Blue</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,20 +13,20 @@
     
     <style>
         :root {
-            --md-sys-color-primary: #003366; 
+            /* Palette Ocean Blue M3 Terbaru 2026 */
+            --md-sys-color-primary: #0061A4; 
             --md-sys-color-on-primary: #FFFFFF;
-            --md-sys-color-primary-container: #D6E2FF;
-            --md-sys-color-on-primary-container: #001B3E;
+            --md-sys-color-primary-container: #D1E4FF;
+            --md-sys-color-on-primary-container: #001D36;
             --md-sys-color-secondary: #535F70; 
             --md-sys-color-secondary-container: #D7E3F7;
             --md-sys-color-surface: #F8F9FF; 
-            --md-sys-color-surface-container: #F0F3FA;
-            --md-sys-color-on-surface: #1A1C1E;
-            --md-sys-color-on-surface-variant: #44474E;
-            --md-sys-color-outline-variant: #C4C6D0;
+            --md-sys-color-surface-container: #EEF0F7;
+            --md-sys-color-on-surface: #191C1E;
+            --md-sys-color-on-surface-variant: #43474E;
+            --md-sys-color-outline-variant: #C3C7CF;
             
-            /* UI Spacing Refinement */
-            --nav-height: 72px; /* Smoother height */
+            --nav-height: 84px;
             --header-height-expanded: 120px;
             --header-height-collapsed: 64px;
             --max-app-width: 768px; 
@@ -40,7 +40,7 @@
         }
 
         body { 
-            background-color: #E2E8F0; 
+            background-color: #D6E3F0; 
             height: 100dvh; width: 100vw; overflow: hidden;
             display: flex; justify-content: center;
         }
@@ -53,7 +53,7 @@
             position: relative;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            box-shadow: 0 0 40px rgba(0,0,0,0.08);
             overflow: hidden;
         }
 
@@ -72,7 +72,7 @@
             height: calc(var(--header-height-collapsed) + env(safe-area-inset-top));
             background: var(--md-sys-color-surface);
             padding-bottom: 12px;
-            box-shadow: 0 4px 20px rgba(0, 51, 102, 0.03);
+            box-shadow: 0 4px 20px rgba(0, 97, 164, 0.05);
         }
         
         .header-subtitle {
@@ -118,21 +118,19 @@
             position: absolute; bottom: 0; left: 0; right: 0;
             height: calc(var(--nav-height) + env(safe-area-inset-bottom));
             background: var(--md-sys-color-surface-container); 
-            display: flex; justify-content: space-around; align-items: center; 
+            display: flex; justify-content: center; align-items: center; 
             z-index: 50; padding-bottom: env(safe-area-inset-bottom);
-            padding-left: 8px; padding-right: 8px;
-            box-shadow: 0 -1px 0 rgba(0,0,0,0.05);
+            box-shadow: 0 -1px 0 rgba(0,0,0,0.03);
         }
         
         .n-btn { 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             height: 100%; flex: 1; color: var(--md-sys-color-on-surface-variant); 
             gap: 4px; transition: all 0.2s; cursor: pointer;
-            padding-top: 4px;
         }
         
         .icon-pill {
-            width: 56px; height: 32px; /* More refined pill size */
+            width: 64px; height: 32px;
             display: flex; align-items: center; justify-content: center;
             border-radius: 100px;
             transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
@@ -146,7 +144,7 @@
         .n-btn .material-symbols-rounded { font-variation-settings: 'FILL' 0, 'wght' 400; font-size: 24px; }
         .n-btn.active .material-symbols-rounded { font-variation-settings: 'FILL' 1, 'wght' 600; }
         
-        .n-txt { font-size: 10.5px; font-weight: 500; letter-spacing: 0.1px; } /* Slightly smaller for alignment */
+        .n-txt { font-size: 11px; font-weight: 500; letter-spacing: 0.1px; }
         .n-btn.active .n-txt { color: var(--md-sys-color-primary); font-weight: 700; }
 
         .card-list { 
@@ -163,15 +161,15 @@
         }
 
         .card { 
-            background: #FFFFFF; padding: 16px 20px; 
+            background: #FFFFFF; padding: 18px 20px; 
             display: flex; align-items: center; width: 100%;
             border-radius: 20px; transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
             border: none;
-            box-shadow: 0 1px 3px rgba(0, 51, 102, 0.08);
+            box-shadow: 0 1px 3px rgba(0, 97, 164, 0.08);
             cursor: pointer;
         }
-        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 51, 102, 0.1); }
-        .card:active { background: #F2F5FF; transform: scale(0.97); }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0, 97, 164, 0.12); }
+        .card:active { background: #F0F4F9; transform: scale(0.97); }
         
         .c-icon { 
             width: 44px; height: 44px; border-radius: 12px; 
@@ -185,27 +183,11 @@
         .card-title { font-weight: 700; font-size: 15px; color: var(--md-sys-color-on-surface); line-height: 1.25; }
         .card-desc { font-size: 12px; color: var(--md-sys-color-on-surface-variant); font-weight: 500; margin-top: 2px; opacity: 0.8; }
 
-        .fab { 
-            width: 56px; height: 56px; 
-            border-radius: 18px; 
-            display: flex; align-items: center; justify-content: center; 
-            position: absolute; bottom: calc(var(--nav-height) + env(safe-area-inset-bottom) + 24px); 
-            right: 20px; z-index: 60; 
-            background: var(--md-sys-color-primary-container); 
-            color: var(--md-sys-color-on-primary-container);
-            box-shadow: 0 4px 8px rgba(0, 30, 60, 0.15);
-            transform: scale(0) translateY(20px); opacity: 0; 
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: pointer;
-        }
-        
-        .fab.visible { transform: scale(1) translateY(0); opacity: 1; }
-        .fab:active { transform: scale(0.92); }
-
         #scrim { 
-            position: absolute; inset: 0; background: rgba(0, 10, 30, 0.4); 
+            position: absolute; inset: 0; background: rgba(0, 20, 40, 0.4); 
             z-index: 1000; visibility: hidden; opacity: 0;
             transition: opacity 0.3s ease, visibility 0.3s;
+            backdrop-filter: blur(2px);
         }
         
         #sheet { 
@@ -214,9 +196,10 @@
             border-radius: 28px 28px 0 0; 
             transform: translateY(105%);
             transition: transform 0.45s cubic-bezier(0.1, 0.9, 0.2, 1);
-            height: 95%; width: 100%;
+            height: 95%;
+            width: 100%;
             display: flex; flex-direction: column;
-            box-shadow: 0 -8px 40px rgba(0, 20, 50, 0.2);
+            box-shadow: 0 -8px 40px rgba(0, 20, 40, 0.15);
             overflow: hidden;
             will-change: transform;
             touch-action: none;
@@ -230,17 +213,17 @@
             display: flex; justify-content: center; flex-shrink: 0;
             touch-action: none;
         }
-        .sheet-handle { width: 36px; height: 4px; background: #E0E0E0; border-radius: 10px; }
+        .sheet-handle { width: 36px; height: 4px; background: #CFD4DB; border-radius: 10px; }
 
         .sheet-header { 
             padding: 0px 16px 12px;
             display: flex; align-items: center; gap: 8px; flex-shrink: 0; 
-            border-bottom: 1px solid #F0F2F5;
+            border-bottom: 1px solid #EEF1F5;
             z-index: 10;
         }
 
         #sheet-content-area {
-            flex: 1; position: relative; background: #F8F9FF; overflow: hidden;
+            flex: 1; position: relative; background: #F9FBFF; overflow: hidden;
             display: flex; flex-direction: column;
             touch-action: auto;
         }
@@ -287,7 +270,7 @@
             transition: all 0.2s; flex-shrink: 0;
             cursor: pointer;
         }
-        .header-action-btn:active { transform: scale(0.9); background: #BDD0FF; }
+        .header-action-btn:active { transform: scale(0.9); background: #BBDDFF; }
 
         .m3-field { padding: 0 20px 16px; }
         .m3-input-box {
@@ -295,7 +278,7 @@
             border-radius: 16px; padding: 14px 16px;
             border: 2px solid transparent; transition: all 0.2s;
         }
-        .m3-input-box:focus-within { border-color: var(--md-sys-color-primary); background: #FFFFFF; box-shadow: 0 4px 12px rgba(0, 51, 102, 0.05); }
+        .m3-input-box:focus-within { border-color: var(--md-sys-color-primary); background: #FFFFFF; box-shadow: 0 4px 12px rgba(0, 97, 164, 0.05); }
         .m3-label { font-size: 11px; color: var(--md-sys-color-primary); font-weight: 800; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; margin-left: 4px; }
         .m3-input { width: 100%; border: none; background: transparent; font-size: 15px; outline: none; font-weight: 500; color: var(--md-sys-color-on-surface); }
     </style>
@@ -308,25 +291,17 @@
             <div id="h-title" class="header-title">Request</div>
         </header>
 
-        <!-- Fab Buttons -->
-        <div id="fab-daily" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/18_DNs4WHDtNw0QvqfZ0Uvx9sAgVVZlz9')">
-            <span class="material-symbols-rounded">folder_open</span>
-        </div>
-        <div id="fab-periodik" class="fab" onclick="handleExternalClick('https://drive.google.com/drive/folders/1Y-sgaereUh9w-HSFwXsGm4GYHN9dLn9Y')">
-            <span class="material-symbols-rounded">cloud_sync</span>
-        </div>
-
-        <!-- Sheets & Overlays -->
+        <!-- Material Bottom Sheet -->
         <div id="scrim" onclick="closeSheet()"></div>
         <div id="sheet">
             <div class="sheet-handle-container" id="sheet-handler">
                 <div class="sheet-handle"></div>
             </div>
             <div class="sheet-header">
-                <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center rounded-full active:bg-slate-200 transition-colors">
-                    <span class="material-symbols-rounded text-slate-600 !text-[24px]">close</span>
+                <button onclick="closeSheet()" class="w-10 h-10 flex items-center justify-center rounded-full active:bg-blue-50 transition-colors">
+                    <span class="material-symbols-rounded text-blue-900 !text-[24px]">close</span>
                 </button>
-                <h2 id="s-title" class="text-[17px] font-extrabold flex-1 text-left px-2 text-slate-900 tracking-tight overflow-hidden text-ellipsis whitespace-nowrap">Detail</h2>
+                <h2 id="s-title" class="text-[17px] font-extrabold flex-1 text-left px-2 text-blue-950 tracking-tight overflow-hidden text-ellipsis whitespace-nowrap">Detail</h2>
                 <button id="btn-submit-action" class="header-action-btn hidden">
                     <span id="btn-icon" class="material-symbols-rounded !text-[24px]">send</span>
                 </button>
@@ -345,6 +320,7 @@
             </div>
         </div>
 
+        <!-- Main Content Pages -->
         <div id="main-container" class="page-container">
             <div id="p1" class="page full-page">
                 <iframe id="iframe-daily" class="w-full h-full border-none" src="https://poharaayub.github.io/Daily-activity-for-client/" loading="lazy"></iframe>
@@ -357,6 +333,7 @@
             <div id="p5" class="page"></div>
         </div>
 
+        <!-- Bottom Navigation -->
         <nav>
             <div class="n-btn" onclick="go('p1', 'Harian', this)">
                 <div class="icon-pill"><span class="material-symbols-rounded">event_available</span></div>
@@ -405,9 +382,6 @@
                 {l:"Feedback & Komplain", i:"rate_review", s:"feedback_form"}
             ],
             p4: [
-                {l:"Daily Activity", i:"inventory_2", url:"https://drive.google.com/drive/folders/1s5BLnmuqGbP3XHq0d30Y1xCUk-tiTejy", ext:true},
-                {l:"Periodik Cleaning", i:"cleaning_bucket", url:"https://drive.google.com/drive/folders/1Q7djVthlF5452-4H1NZJVw6Cm3fn7zS8", ext:true},
-                {l:"Filter Air Shower", i:"water_full", url:"https://drive.google.com/drive/folders/1k6rda5eJahwtyhs6o6YefO0F9h6CmVzX", ext:true},
                 {l:"Jadwal Shift", i:"calendar_month", url:"https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/", ext:false},
                 {l:"Arsip Big Cleaning", i:"verified", url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz", ext:true},
                 {l:"Laporan Cuci Box", i:"package_2", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit"},
@@ -430,12 +404,8 @@
             current.classList.add('active');
             
             const header = document.getElementById('main-header');
-            const fabDaily = document.getElementById('fab-daily');
-            const fabPeriodik = document.getElementById('fab-periodik');
             
             header.style.display = (id === 'p1' || id === 'p2') ? 'none' : 'flex';
-            fabDaily.classList.toggle('visible', id === 'p1');
-            fabPeriodik.classList.toggle('visible', id === 'p2');
             
             if(id === 'p2' && document.getElementById('iframe-periodik').src === "about:blank") {
                 document.getElementById('iframe-periodik').src = "https://poharaayub.github.io/OCS-NFI-Job-Desk-Apps-Client-/";
@@ -483,7 +453,7 @@
                     <div class="card-title">${t}</div>
                     ${(showDesc && d) ? `<div class="card-desc">${d}</div>` : ''}
                 </div>
-                <span class="material-symbols-rounded text-slate-300 !text-[18px] ml-2 opacity-50">chevron_right</span>
+                <span class="material-symbols-rounded text-blue-200 !text-[18px] ml-2 opacity-50">chevron_right</span>
             </button>`;
         }
 
@@ -534,12 +504,12 @@
                 submitBtn.classList.add('hidden');
                 html += `<div class="flex flex-col items-center py-10 px-6 text-center">
                     <div class="w-20 h-20 bg-blue-50 rounded-[24px] flex items-center justify-center mb-6 border border-blue-100 shadow-sm">
-                         <span class="material-symbols-rounded text-[#003366] !text-4xl">shield_person</span>
+                         <span class="material-symbols-rounded text-[#0061A4] !text-4xl">shield_person</span>
                     </div>
-                    <h3 class="text-xl font-extrabold text-slate-900 tracking-tight">Pohara Ayub</h3>
-                    <p class="text-slate-500 font-bold text-[10px] mt-1 uppercase tracking-widest">Sistem Pengembang OCS NFI</p>
-                    <div class="mt-8 pt-8 border-t border-slate-100 w-full text-slate-400 text-[10px] font-medium tracking-wide uppercase">
-                        Version 26.1.0 (Stable)
+                    <h3 class="text-xl font-extrabold text-blue-950 tracking-tight">Pohara Ayub</h3>
+                    <p class="text-blue-500 font-bold text-[10px] mt-1 uppercase tracking-widest">Sistem Pengembang OCS NFI</p>
+                    <div class="mt-8 pt-8 border-t border-blue-100 w-full text-blue-400 text-[10px] font-medium tracking-wide uppercase">
+                        Version 26.1.1 (Stable) - Blue Edition
                     </div>
                 </div>`;
             } else if (type === 'feedback_form') {
@@ -612,6 +582,7 @@
             }
         }
 
+        // Gestures for Bottom Sheet
         const sheetElement = document.getElementById('sheet');
         const handler = document.getElementById('sheet-handler');
 
