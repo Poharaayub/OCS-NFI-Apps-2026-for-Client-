@@ -13,7 +13,6 @@
     
     <style>
         :root {
-            /* Palette Ocean Blue M3 Terbaru 2026 */
             --md-sys-color-primary: #0061A4; 
             --md-sys-color-on-primary: #FFFFFF;
             --md-sys-color-primary-container: #D1E4FF;
@@ -56,8 +55,6 @@
             box-shadow: 0 0 40px rgba(0,0,0,0.08);
             overflow: hidden;
         }
-
-        body.sheet-visible { overflow: hidden; position: fixed; width: 100%; }
 
         header {
             height: calc(var(--header-height-expanded) + env(safe-area-inset-top));
@@ -114,7 +111,6 @@
             to { opacity: 1; transform: translateY(0); } 
         }
 
-        /* Navigasi Bawah Ter-optimasi */
         nav {
             position: absolute; bottom: 0; left: 0; right: 0;
             height: calc(var(--nav-height) + env(safe-area-inset-bottom));
@@ -202,6 +198,7 @@
         .card-text-container { display: flex; flex-direction: column; text-align: left; flex: 1; overflow: hidden; }
         .card-title { font-weight: 700; font-size: 15px; color: var(--md-sys-color-on-surface); line-height: 1.25; }
         .card-desc { font-size: 12px; color: var(--md-sys-color-on-surface-variant); font-weight: 500; margin-top: 2px; opacity: 0.8; }
+        .card-action-hint { font-size: 10px; color: #0076C8; font-weight: 700; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px; }
 
         #scrim { 
             position: absolute; inset: 0; background: rgba(0, 20, 40, 0.4); 
@@ -227,6 +224,7 @@
 
         .sheet-visible #sheet { transform: translateY(0); }
         .sheet-visible #scrim { visibility: visible; opacity: 1; }
+        .sheet-visible { overflow: hidden; position: fixed; width: 100%; }
         
         .sheet-handle-container {
             width: 100%; padding: 12px 0 16px; cursor: grab;
@@ -311,7 +309,6 @@
             <div id="h-title" class="header-title">Request</div>
         </header>
 
-        <!-- Material Bottom Sheet -->
         <div id="scrim" onclick="closeSheet()"></div>
         <div id="sheet">
             <div class="sheet-handle-container" id="sheet-handler">
@@ -340,7 +337,6 @@
             </div>
         </div>
 
-        <!-- Main Content Pages -->
         <div id="main-container" class="page-container">
             <div id="p1" class="page full-page">
                 <iframe id="iframe-daily" class="w-full h-full border-none" src="https://poharaayub.github.io/Daily-activity-for-client/" loading="lazy"></iframe>
@@ -353,7 +349,6 @@
             <div id="p5" class="page"></div>
         </div>
 
-        <!-- Optimized Bottom Navigation -->
         <nav>
             <div class="n-btn" onclick="go('p1', 'Harian', this)">
                 <div class="icon-pill"><span class="material-symbols-rounded">event_available</span></div>
@@ -424,7 +419,6 @@
             current.classList.add('active');
             
             const header = document.getElementById('main-header');
-            
             header.style.display = (id === 'p1' || id === 'p2') ? 'none' : 'flex';
             
             if(id === 'p2' && document.getElementById('iframe-periodik').src === "about:blank") {
@@ -455,7 +449,7 @@
             wrap.className = "card-list px-1 py-2";
             
             if(id === 'p5') {
-                wrap.innerHTML = members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, true)).join('');
+                wrap.innerHTML = members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, true, true)).join('');
             } else if(menuData[id]) {
                 wrap.innerHTML = menuData[id].map(item => {
                     let act = item.s ? `openMenuSheet('${item.s}')` : (item.ext ? `handleExternalClick('${item.url}')` : `openInSheet('${item.l}','${item.url}')`);
@@ -465,13 +459,14 @@
             container.appendChild(wrap);
         }
 
-        function createCard(t, i, a, d="", showDesc=false) {
+        function createCard(t, i, a, d="", showDesc=false, isMember=false) {
             return `
             <button class="card" onclick="${a}">
                 <div class="c-icon"><span class="material-symbols-rounded">${i}</span></div>
                 <div class="card-text-container">
                     <div class="card-title">${t}</div>
                     ${(showDesc && d) ? `<div class="card-desc">${d}</div>` : ''}
+                    ${isMember ? `<div class="card-action-hint"><span class="material-symbols-rounded !text-[14px]">chat</span> Hubungi WhatsApp</div>` : ''}
                 </div>
                 <span class="material-symbols-rounded text-blue-200 !text-[18px] ml-2 opacity-50">chevron_right</span>
             </button>`;
@@ -561,7 +556,7 @@
                 title = type==='req_tl'?"Team Leader":"Pilih Petugas";
                 submitBtn.classList.add('hidden');
                 const list = type==='req_tl' ? members.filter(m=>m.d.includes("Leader")||m.d.includes("Manager")) : members.filter(m=>!m.d.includes("Leader")&&!m.d.includes("Manager"));
-                html += `<div class="card-list">` + list.map(m => createCard(m.n, "chat", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, true)).join('') + `</div>`;
+                html += `<div class="card-list">` + list.map(m => createCard(m.n, "chat", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, true, true)).join('') + `</div>`;
             }
             html += '</div>';
             content.innerHTML = html;
@@ -573,10 +568,8 @@
             const category = document.getElementById('f-category').value;
             const message = document.getElementById('f-message').value;
             if(!name || !message) return;
-            
             const loader = document.getElementById('m3-loader');
             loader.classList.add('active');
-            
             setTimeout(() => {
                 const waText = `*CLIENT FEEDBACK - OCS NFI*%0A%0A📍 *Lokasi:* ${name}%0A🏷️ *Kategori:* ${category}%0A💬 *Isi:*%0A${message}`;
                 window.open(`https://wa.me/6289637126728?text=${waText}`, '_blank');
@@ -589,7 +582,6 @@
             const appBody = document.getElementById('app-body');
             const sheet = document.getElementById('sheet');
             const loader = document.getElementById('m3-loader');
-            
             if (appBody.classList.contains('sheet-visible')) {
                 appBody.classList.remove('sheet-visible');
                 sheet.style.transform = ''; 
@@ -602,25 +594,14 @@
             }
         }
 
-        // Gestures for Bottom Sheet
         const sheetElement = document.getElementById('sheet');
         const handler = document.getElementById('sheet-handler');
-
-        function handleDragStart(y) {
-            startY = y;
-            isDragging = true;
-            sheetElement.style.transition = 'none';
-        }
-
+        function handleDragStart(y) { startY = y; isDragging = true; sheetElement.style.transition = 'none'; }
         function handleDragMove(y) {
             if (!isDragging) return;
             const deltaY = y - startY;
-            if (deltaY > 0) {
-                currentY = deltaY;
-                sheetElement.style.transform = `translateY(${currentY}px)`;
-            }
+            if (deltaY > 0) { currentY = deltaY; sheetElement.style.transform = `translateY(${currentY}px)`; }
         }
-
         function handleDragEnd() {
             if (!isDragging) return;
             isDragging = false;
@@ -630,11 +611,7 @@
             currentY = 0;
             document.body.style.cursor = '';
         }
-
-        handler.addEventListener('mousedown', (e) => {
-            handleDragStart(e.clientY);
-            document.body.style.cursor = 'grabbing';
-        });
+        handler.addEventListener('mousedown', (e) => { handleDragStart(e.clientY); document.body.style.cursor = 'grabbing'; });
         document.addEventListener('mousemove', (e) => handleDragMove(e.clientY));
         document.addEventListener('mouseup', handleDragEnd);
         handler.addEventListener('touchstart', (e) => handleDragStart(e.touches[0].clientY), {passive: true});
@@ -644,7 +621,6 @@
         function handleExternalClick(url) { window.open(url, '_blank'); }
         window.onpopstate = () => { if(sheetIsOpen) { closeSheet(); } };
         function chat(p, m) { window.open(`https://wa.me/${p}?text=${encodeURIComponent(m)}`, '_blank'); }
-
         window.onload = () => { go('p3', 'Request', document.getElementById('default-nav-btn')); };
     </script>
 </body>
