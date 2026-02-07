@@ -346,7 +346,9 @@
             </div>
             <div id="p3" class="page active"></div>
             <div id="p4" class="page"></div>
-            <div id="p5" class="page"></div>
+            <div id="p5" class="page full-page">
+                <iframe id="iframe-shift" class="w-full h-full border-none" src="about:blank" loading="lazy"></iframe>
+            </div>
         </div>
 
         <nav>
@@ -366,9 +368,9 @@
                 <div class="icon-pill"><span class="material-symbols-rounded">analytics</span></div>
                 <span class="n-txt">Laporan</span>
             </div>
-            <div class="n-btn" onclick="go('p5', 'Anggota', this)">
-                <div class="icon-pill"><span class="material-symbols-rounded">groups</span></div>
-                <span class="n-txt">Anggota</span>
+            <div class="n-btn" onclick="go('p5', 'Shift', this)">
+                <div class="icon-pill"><span class="material-symbols-rounded">calendar_month</span></div>
+                <span class="n-txt">Shift</span>
             </div>
         </nav>
     </div>
@@ -392,12 +394,10 @@
 
         const menuData = {
             p3: [
-                {l:"Request ke Team Leader", i:"chat_bubble", s:"req_tl"}, 
-                {l:"Request ke Cleaner", i:"cleaning_services", s:"req_cso"},
+                {l:"Hubungi Member", i:"cleaning_services", s:"req_cso"},
                 {l:"Feedback & Komplain", i:"rate_review", s:"feedback_form"}
             ],
             p4: [
-                {l:"Jadwal Shift", i:"calendar_month", url:"https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/", ext:false},
                 {l:"Arsip Big Cleaning", i:"verified", url:"https://drive.google.com/drive/folders/1c1mQZI8IuOqy1HnGMozhmQqVbvW--vpz", ext:true},
                 {l:"Laporan Cuci Box", i:"package_2", url:"https://docs.google.com/spreadsheets/d/1vf2pzwlvdsm17cyo1Zrc6DBUL4EeQOng5uJjU12aYvg/edit"},
                 {l:"Laporan Cuci Pallet", i:"layers", url:"https://docs.google.com/spreadsheets/d/13dPCq4lEhV4PRA4z2RLQEmPbOIBK9emuclkxk-Dh7iU/edit"},
@@ -419,14 +419,19 @@
             current.classList.add('active');
             
             const header = document.getElementById('main-header');
-            header.style.display = (id === 'p1' || id === 'p2') ? 'none' : 'flex';
+            // Sembunyikan header pada halaman webview penuh
+            header.style.display = (id === 'p1' || id === 'p2' || id === 'p5') ? 'none' : 'flex';
             
             if(id === 'p2' && document.getElementById('iframe-periodik').src === "about:blank") {
                 document.getElementById('iframe-periodik').src = "https://poharaayub.github.io/OCS-NFI-Job-Desk-Apps-Client-/";
             }
+            
+            if(id === 'p5' && document.getElementById('iframe-shift').src === "about:blank") {
+                document.getElementById('iframe-shift').src = "https://poharaayub.github.io/Shift-schedule-OCS-NFI-Apps-26/";
+            }
 
             renderPage(id);
-            document.getElementById('h-title').innerText = (id === 'p1' || id === 'p2') ? '' : title;
+            document.getElementById('h-title').innerText = (id === 'p1' || id === 'p2' || id === 'p5') ? '' : title;
             current.scrollTop = 0;
             header.classList.remove('scrolled');
         }
@@ -441,16 +446,14 @@
 
         function renderPage(id) {
             const container = document.getElementById(id);
-            if(!container || id === 'p1' || id === 'p2') return;
-            if(container.children.length > 0 && id !== 'p5') return; 
+            if(!container || id === 'p1' || id === 'p2' || id === 'p5') return;
+            if(container.children.length > 0) return; 
             
             container.innerHTML = '';
             const wrap = document.createElement('div');
             wrap.className = "card-list px-1 py-2";
             
-            if(id === 'p5') {
-                wrap.innerHTML = members.map(m => createCard(m.n, "person", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, true, true)).join('');
-            } else if(menuData[id]) {
+            if(menuData[id]) {
                 wrap.innerHTML = menuData[id].map(item => {
                     let act = item.s ? `openMenuSheet('${item.s}')` : (item.ext ? `handleExternalClick('${item.url}')` : `openInSheet('${item.l}','${item.url}')`);
                     return createCard(item.l, item.i, act, "", false);
@@ -552,11 +555,10 @@
                     </div>
                     <div class="m3-field"><label class="m3-label">Detail Pesan / Keluhan</label><div class="m3-input-box"><textarea id="f-message" class="m3-input min-h-[120px]" placeholder="Mohon jelaskan kendala yang ditemukan..."></textarea></div></div>
                 </div>`;
-            } else {
-                title = type==='req_tl'?"Team Leader":"Pilih Petugas";
+            } else if (type === 'req_cso') {
+                title = "Hubungi Member";
+                html += `<div class="card-list">` + members.map(m => createCard(m.n, "chat", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, true, true)).join('') + `</div>`;
                 submitBtn.classList.add('hidden');
-                const list = type==='req_tl' ? members.filter(m=>m.d.includes("Leader")||m.d.includes("Manager")) : members.filter(m=>!m.d.includes("Leader")&&!m.d.includes("Manager"));
-                html += `<div class="card-list">` + list.map(m => createCard(m.n, "chat", `chat('${m.p}', 'Halo ${m.n}, mohon bantuan di area...')`, m.d, true, true)).join('') + `</div>`;
             }
             html += '</div>';
             content.innerHTML = html;
